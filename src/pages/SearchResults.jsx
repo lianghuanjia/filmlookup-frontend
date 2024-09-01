@@ -5,6 +5,15 @@ const SearchResults = () => {
   const location = useLocation();
   const movies = location.state?.movies || [];
 
+// Use it to format the releaseTime. The releaseTime can be in YYYY, or YYYY-MM-DD.
+const formatReleaseTime = (releaseTime) => {
+  // Check if releaseTime is valid
+  if (!releaseTime || isNaN(new Date(releaseTime).getTime())) {
+    return '2004'; // Default to 2004 if releaseTime is invalid
+  }
+  return releaseTime.substring(0, 4); // Extract the first 4 characters (YYYY)
+};
+
   return (
     <div>
       <h1>Search Results</h1>
@@ -42,8 +51,13 @@ const SearchResults = () => {
                   {movie.title}
                 </h2>
                 <p style={{ margin: 0, color: '#555', fontSize: '14px' }}>
-                  <strong>Release Date:</strong> {new Date(movie.releaseTime).toLocaleDateString()}
+                {formatReleaseTime(movie.releaseTime)}
                 </p>
+                {movie.overview && ( // Check if overview exists
+                  <p style={{ marginTop: '10px', color: '#555', fontSize: '14px', whiteSpace: 'normal', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {movie.overview}
+                  </p>
+                )}
               </div>
             </div>
           ))}
