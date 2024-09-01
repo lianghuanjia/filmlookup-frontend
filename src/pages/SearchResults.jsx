@@ -36,7 +36,8 @@ const SearchResults = () => {
                   objectFit: 'cover',  // Ensure the image covers the area without distortion
                 }}
               />
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              {/* Below is the overall right side part in each block, which contains movie title and release time */}
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'left' }}> 
                 <h2 style={{ margin: '0 0 5px 0', fontSize: '18px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {movie.title}
                 </h2>
