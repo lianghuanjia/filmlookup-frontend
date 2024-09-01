@@ -5,13 +5,42 @@ const SearchResults = () => {
   const location = useLocation();
   const movies = location.state?.movies || [];
 
+
+// Function to generate a random date between 2000 and 2010
+const generateRandomDate = () => {
+  const start = new Date(2000, 0, 1).getTime();  // Start date: January 1, 2000
+  const end = new Date(2010, 11, 31).getTime();  // End date: December 31, 2010
+  const randomDate = new Date(start + Math.random() * (end - start));
+  
+  const year = randomDate.getFullYear();
+  const month = String(randomDate.getMonth() + 1).padStart(2, '0');  // Add 1 because getMonth() is zero-based
+  const day = String(randomDate.getDate()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}`;
+};
+
+// Function to generate a random MM-DD and append it to a given YYYY
+const generateRandomMonthDay = (year) => {
+  const randomMonth = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0'); // Random month between 01-12
+  const randomDay = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');   // Random day between 01-28 (safe for all months)
+  
+  return `${year}-${randomMonth}-${randomDay}`;
+};
+
 // Use it to format the releaseTime. The releaseTime can be in YYYY, or YYYY-MM-DD.
 const formatReleaseTime = (releaseTime) => {
-  // Check if releaseTime is valid
+  // If releaseTime is null or invalid, generate a full random date
   if (!releaseTime || isNaN(new Date(releaseTime).getTime())) {
-    return '2004'; // Default to 2004 if releaseTime is invalid
+    return generateRandomDate();
   }
-  return releaseTime.substring(0, 4); // Extract the first 4 characters (YYYY)
+  
+  // If releaseTime is in YYYY format, append a random MM-DD
+  if (/^\d{4}$/.test(releaseTime)) {
+    return generateRandomMonthDay(releaseTime);
+  }
+
+  // If releaseTime is already in YYYY-MM-DD format, return it as is
+  return releaseTime;
 };
 
   return (
@@ -55,10 +84,10 @@ const formatReleaseTime = (releaseTime) => {
                 padding: '20px 0'  // Increased padding at the top and bottom
                 }}> 
                 <div style={{marginTop:'3px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-                  <h2 style={{ margin: 0, fontSize: '18px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <h2 style={{ margin: 0, fontSize: '19px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {movie.title}
                   </h2>
-                  <p style={{ margin: '0 0 0 0', color: '#555', fontSize: '14px' }}>  
+                  <p style={{ margin: '0 0 0 0', color: 'grey', fontSize: '14px' }}>  
                     {formatReleaseTime(movie.releaseTime)}
                   </p>
                 </div>
