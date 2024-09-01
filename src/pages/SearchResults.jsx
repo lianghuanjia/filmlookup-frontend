@@ -53,10 +53,19 @@ const formatReleaseTime = (releaseTime) => {
                 <p style={{ margin: 0, color: '#555', fontSize: '14px' }}>
                 {formatReleaseTime(movie.releaseTime)}
                 </p>
-                {movie.overview && ( // Check if overview exists
-                  <p style={{ marginTop: '10px', color: '#555', fontSize: '14px', whiteSpace: 'normal', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {movie.overview}
-                  </p>
+                {movie.overview && (
+                <p style={{
+                  marginTop: '10px', 
+                  color: '#555', 
+                  fontSize: '14px', 
+                  display: '-webkit-box', 
+                  WebkitBoxOrient: 'vertical', 
+                  WebkitLineClamp: 3, 
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}>
+                  {movie.overview}
+                </p>
                 )}
               </div>
             </div>
