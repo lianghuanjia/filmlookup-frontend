@@ -46,28 +46,45 @@ const formatReleaseTime = (releaseTime) => {
                 }}
               />
               {/* Below is the overall right side part in each block, which contains movie title and release time */}
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'left' }}> 
-                <h2 style={{ margin: '0 0 5px 0', fontSize: '18px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {movie.title}
-                </h2>
-                <p style={{ margin: 0, color: '#555', fontSize: '14px' }}>
-                {formatReleaseTime(movie.releaseTime)}
-                </p>
+              <div style={{ // Define the style of the right-side content of each movie block
+                display: 'flex', 
+                flexDirection: 'column', 
+                justifyContent: 'flex-start', 
+                textAlign: 'left', 
+                height: '100%', 
+                padding: '20px 0'  // Increased padding at the top and bottom
+                }}> 
+                <div style={{marginTop:'3px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+                  <h2 style={{ margin: 0, fontSize: '18px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {movie.title}
+                  </h2>
+                  <p style={{ margin: '0 0 0 0', color: '#555', fontSize: '14px' }}>  
+                    {formatReleaseTime(movie.releaseTime)}
+                  </p>
+                </div>
+                
                 {movie.overview && (
-                <p style={{
-                  marginTop: '10px', 
-                  color: '#555', 
-                  fontSize: '14px', 
-                  display: '-webkit-box', 
-                  WebkitBoxOrient: 'vertical', 
-                  WebkitLineClamp: 3, 
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}>
-                  {movie.overview}
-                </p>
+                  <div style={{ marginTop: '18px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+                    <p style={{
+                      margin: 0, 
+                      color: '#555', 
+                      fontSize: '16px', 
+                      display: '-webkit-box', 
+                      WebkitBoxOrient: 'vertical', 
+                      WebkitLineClamp: 2, 
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}>
+                      {movie.overview}
+                    </p>
+                  </div>
                 )}
               </div>
+
+
+
+
+
             </div>
           ))}
         </div>
