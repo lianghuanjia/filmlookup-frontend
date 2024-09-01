@@ -9,26 +9,33 @@ const SearchResults = () => {
     <div>
       <h1>Search Results</h1>
       {movies.length > 0 ? (
-        <ul>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {movies.map((movie) => (
-            <li key={movie.id} style={{ marginBottom: '20px' }}>
-              <h2>{movie.title}</h2>
-              <p><strong>Directed by:</strong> {movie.directors}</p>
-              <p><strong>Release Date:</strong> {new Date(movie.releaseTime).toLocaleDateString()}</p>
-              <p><strong>Rating:</strong> {movie.rating}/10</p>
-              <img 
-                src={`https://image.tmdb.org/t/p/w200${movie.posterPath}`} 
-                alt={`${movie.title} poster`} 
-                style={{ width: '100px', marginRight: '10px' }}
+            <div
+              key={movie.id}
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                border: '1px solid #ddd',
+                padding: '10px',
+                borderRadius: '8px',
+                backgroundColor: '#f9f9f9',
+              }}
+            >
+              <img
+                src={`https://image.tmdb.org/t/p/w200${movie.posterPath}`}
+                alt={`${movie.title} poster`}
+                style={{ width: '100px', borderRadius: '4px', marginRight: '20px' }}
               />
-              <img 
-                src={`https://image.tmdb.org/t/p/w300${movie.backdropPath}`} 
-                alt={`${movie.title} backdrop`} 
-                style={{ width: '300px' }}
-              />
-            </li>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <h2 style={{ margin: '0 0 10px 0' }}>{movie.title}</h2>
+                <p style={{ margin: 0, color: '#555' }}>
+                  <strong>Release Date:</strong> {new Date(movie.releaseTime).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
         <p>No results found.</p>
       )}
