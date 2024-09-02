@@ -50,18 +50,18 @@ const formatReleaseTime = (releaseTime) => {
       {movies.length > 0 ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {movies.map((movie) => (
-            <div // The block for each movie result
+            <div
               key={movie.id}
               style={{
                 display: 'flex',
-                alignItems: 'center', // Center items vertically
-                width: '1000px',       // Fixed width
-                height: '120px',      // Fixed height
+                alignItems: 'stretch',  // Ensure child elements stretch to fill the block height
+                width: '1000px',
+                height: '140px',
                 border: '1px solid #ddd',
-                padding: '10px',
-                borderRadius: '8px',
+                padding: '0',           // Remove padding to avoid spacing around the image
+                borderRadius: '8px', 
                 backgroundColor: '#f9f9f9',
-                overflow: 'hidden',   // Ensure content doesn't overflow the block
+                overflow: 'hidden',     // Ensure content doesn't overflow the block
               }}
             >
               <img
@@ -69,12 +69,13 @@ const formatReleaseTime = (releaseTime) => {
                 alt={`${movie.title} poster`}
                 style={{
                   width: '100px',
-                  height: '130px',     // Fix height to keep the image within bounds
-                  borderRadius: '4px',
-                  marginRight: '20px',
+                  height: '100%',     // Fix height to keep the image within bounds
+                  borderRadius: '8px 0 0 8px', // Round only the left corners to match the block's border radius
+                  // marginRight: '20px',
                   objectFit: 'cover',  // Ensure the image covers the area without distortion
                 }}
               />
+
               {/* Below is the overall right side part in each block, which contains movie title and release time */}
               <div style={{ // Define the style of the right-side content of each movie block
                 display: 'flex', 
@@ -82,9 +83,11 @@ const formatReleaseTime = (releaseTime) => {
                 justifyContent: 'flex-start', 
                 textAlign: 'left', 
                 height: '100%', 
-                padding: '20px 0'  // Increased padding at the top and bottom
+                marginLeft: '11px', // Separate the right block from the image on the left side
+                padding: '11 0 0 10px'  // Increased padding at the top and bottom
                 }}> 
-                <div style={{marginTop:'3px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+
+                <div style={{ marginTop: '11px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
                   <h2 style={{ margin: 0, fontSize: '19px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {movie.title}
                   </h2>
@@ -94,7 +97,7 @@ const formatReleaseTime = (releaseTime) => {
                 </div>
                 
                 {movie.overview && (
-                  <div style={{ marginTop: '18px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+                  <div style={{ marginTop: '13px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
                     <p style={{
                       margin: 0, 
                       color: '#555', 
