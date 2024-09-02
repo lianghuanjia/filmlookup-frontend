@@ -12,11 +12,7 @@ const generateRandomDate = () => {
   const end = new Date(2010, 11, 31).getTime();  // End date: December 31, 2010
   const randomDate = new Date(start + Math.random() * (end - start));
   
-  const year = randomDate.getFullYear();
-  const month = String(randomDate.getMonth() + 1).padStart(2, '0');  // Add 1 because getMonth() is zero-based
-  const day = String(randomDate.getDate()).padStart(2, '0');
-  
-  return `${year}-${month}-${day}`;
+  return randomDate;
 };
 
 // Function to generate a random MM-DD and append it to a given YYYY
@@ -24,23 +20,28 @@ const generateRandomMonthDay = (year) => {
   const randomMonth = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0'); // Random month between 01-12
   const randomDay = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');   // Random day between 01-28 (safe for all months)
   
-  return `${year}-${randomMonth}-${randomDay}`;
+  return new Date(year, randomMonth, randomDay);
+};
+
+// Function to format the date as "Month Day, Year"
+const formatDateToHumanReadable = (date) => {
+  return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
 };
 
 // Use it to format the releaseTime. The releaseTime can be in YYYY, or YYYY-MM-DD.
 const formatReleaseTime = (releaseTime) => {
   // If releaseTime is null or invalid, generate a full random date
   if (!releaseTime || isNaN(new Date(releaseTime).getTime())) {
-    return generateRandomDate();
+    return formatDateToHumanReadable(generateRandomDate());
   }
   
   // If releaseTime is in YYYY format, append a random MM-DD
   if (/^\d{4}$/.test(releaseTime)) {
-    return generateRandomMonthDay(releaseTime);
+    return formatDateToHumanReadable(generateRandomMonthDay(releaseTime));
   }
 
-  // If releaseTime is already in YYYY-MM-DD format, return it as is
-  return releaseTime;
+  // If releaseTime is already in YYYY-MM-DD format, format it to "Month Day, Year"
+  return formatDateToHumanReadable(new Date(releaseTime));
 };
 
   return (
