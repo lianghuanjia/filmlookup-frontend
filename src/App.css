@@ -168,15 +168,20 @@
 }
 
 .header-left {
-  width: 20%; /* 20% width for the poster */
+  width: 40%; /* Width is 40% of the parent container */
+  min-width: 303px; /* Set a minimum width for the poster */
+  height: 100%; 
+  min-height: 512px; /* Set a minimum height for the poster */
   display: flex;
+  margin-left: 1%; /* Gap between the header-left and the left side of the window */
+  flex-shrink: 0; /* Prevent the left header from shrinking */
   justify-content: center; /* Center the poster horizontally */
   align-items: center; /* Center the poster vertically */
   overflow: hidden; /* Hide any part of the poster that exceeds the container */
 }
 
 .header-right {
-  width: 80%; /* 80% width for the other information */
+  flex-grow: 1; /* Allow the right side to take up remaining space */
   padding-left: 20px; /* Add some padding to the left for spacing */
   display: flex;
   flex-direction: column; /* Arrange content vertically */
@@ -193,8 +198,10 @@
 
 
 .movie-detail-poster-image {
-  width: 100%;
+  width: 100%; /* The image will take up the full width of its container */
+  max-width: 303px; /* The image won't get larger than 303px */
   height: 100%;
+  max-height: 512px;
   object-fit: cover; /* Ensure the image covers the area without distortion */
   border-radius: 8px; /* Optional: Add some border radius for a rounded effect */
 }
