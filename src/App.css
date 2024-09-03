@@ -113,8 +113,16 @@
   margin: 0;
   color: #252525;
   font-size: 16px;
+  display: -webkit-box; /* 'The display: *' makes sure the content is displayed correctly across different browsers, even if text clamping isn’t fully supported. */
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex; /* Using display: flex as a fallback can help ensure better compatibility across different browsers, although it may not fully replicate the clamping behavior in non-WebKit browsers. */
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -ms-flex-orient: vertical;
+  -webkit-flex-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   overflow: hidden;
