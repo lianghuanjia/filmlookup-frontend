@@ -154,7 +154,7 @@
 }
 
 .movie-detail-header {
-  background-color: #020283; /* Example background color */
+  background-color: #a6a6ab; /* Example background color */
   /* background-image: var(--backdrop-url); 
   background-size: cover;
   background-position: center; */
@@ -162,10 +162,26 @@
   width: 100vw;
   height: 570px; /* Set the maximum height to 570px */
   margin-left: calc(-50vw + 50%); /* Center it relative to the viewport */
-  /* left: 50%; 
-  right: 50%; */
   box-sizing: border-box; /* Ensure padding does not affect the width */
   position: relative; /* Ensure it stays in place */
+  display: flex; /* Use flexbox to align content side by side */
+}
+
+.header-left {
+  width: 20%; /* 20% width for the poster */
+  display: flex;
+  justify-content: center; /* Center the poster horizontally */
+  align-items: center; /* Center the poster vertically */
+  overflow: hidden; /* Hide any part of the poster that exceeds the container */
+}
+
+.header-right {
+  width: 80%; /* 80% width for the other information */
+  padding-left: 20px; /* Add some padding to the left for spacing */
+  display: flex;
+  flex-direction: column; /* Arrange content vertically */
+  justify-content: center; /* Center the content vertically */
+  color: rgb(61, 59, 59); /* Adjust text color for better readability */
 }
 
 .movie-detail-content {
@@ -173,4 +189,12 @@
   padding: 20px;
   margin: 20px 10px; /* 10px gap on the left and right */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow for depth */
+}
+
+
+.movie-detail-poster-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the area without distortion */
+  border-radius: 8px; /* Optional: Add some border radius for a rounded effect */
 }

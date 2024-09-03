@@ -41,17 +41,23 @@ const MovieDetail = () => {
       }
 
     const backdropUrl = `https://image.tmdb.org/t/p/original${movie.backdropPath}`;
+    const posterUrl = `https://image.tmdb.org/t/p/w500${movie.posterPath}`;
 
   return (
     <div className="movie-detail-container">
-      <div className="movie-detail-header" style={{ '--backdrop-url': `url(${backdropUrl})` }}>
-        <h1>{movie.title}</h1>
-        {/* Add more header content here */}
-      </div>
-      <div className="movie-detail-content">
-        <p>{movie.overview}</p>
-        {/* Add more content here */}
-      </div>
+        <div className="movie-detail-header" style={{ '--backdrop-url': `url(${backdropUrl})` }}>
+            <div class="header-left">
+                <img src={posterUrl} alt={`${movie.title} Poster`} className="movie-detail-poster-image" />
+            </div>
+            <div class="header-right">
+                <h1>{movie.title}</h1>
+                {/* Add more header content here */}
+            </div>
+        </div>
+        <div className="movie-detail-content">
+            <p>{movie.overview}</p>
+            {/* Add more content here */}
+        </div>
     </div>
   );
 };
