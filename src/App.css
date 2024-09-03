@@ -45,3 +45,79 @@
   color: rgb(195, 188, 188); /* Change this to your desired color */
   opacity: 1;  /* Ensure the color applies fully */
 }
+
+.results-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.movie-block {
+  display: flex;
+  align-items: stretch;
+  width: 1000px;
+  height: 140px;
+  border: 1px solid #ddd;
+  padding: 0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  overflow: hidden;
+  box-shadow: 0px 4px 8px rgba(51, 50, 50, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-block:hover {
+  transform: translateY(-1px);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.movie-poster {
+  width: 100px;
+  height: 100%;
+  border-radius: 8px 0 0 8px;
+  object-fit: cover;
+}
+
+.movie-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: left;
+  height: 100%;
+  margin-left: 11px;
+  padding: 11px 0 0 10px;
+}
+
+.movie-title h2 {
+  margin: 0;
+  font-size: 19px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.movie-title p {
+  margin: 0;
+  color: grey;
+  font-size: 14px;
+}
+
+.movie-overview {
+  margin-top: 13px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.movie-overview p {
+  margin: 0;
+  color: #252525;
+  font-size: 16px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
