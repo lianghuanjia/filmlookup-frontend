@@ -38,52 +38,39 @@ const SearchBar = ({ onSearch }) => {
   // }, []); // Fetch once when the component mounts
 
   return (
-    <div style={{ width: '100%', maxWidth: '60vw', margin: '0 auto' }}>
-      <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
-        <input
-          type="text"
-          value={query}
-          onChange={handleInputChange}
-          placeholder="Search for movies..."
-          className="custom-movie-search-text"
-          style={{
-            width: '50vw',
-            height: '30px',
-            padding: '10px 50px 10px 20px', 
-            fontSize: '19px',
-            border: '1px solid #ccc',
-            borderRadius: '30px', // Rounded corners
-            outline: 'none',
-            flex: 1, // Allows input to take available space
-          }}
-        />
-        <IconButton
-          onClick={handleSearch}
-          style={{
-            marginLeft: '-50px', // Adjust this to overlap the button with the input field
-            height: '30px', // Match the height of the input field
-            borderRadius: '0 16px 16px 0', // Rounded right corners
-            color: 'grey',
-          }}
-        >
-          <SearchIcon />
-        </IconButton>
+    <div className="search-bar-container"> {/* Add this container */}
+      <div style={{ width: '100%', maxWidth: '60vw', margin: '0 auto' }}>
+        <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+          <input
+            type="text"
+            value={query}
+            onChange={handleInputChange}
+            placeholder="Search for movies..."
+            className="custom-movie-search-text"
+            style={{
+              width: '50vw',
+              height: '30px',
+              padding: '10px 50px 10px 20px', 
+              fontSize: '19px',
+              border: '1px solid #ccc',
+              borderRadius: '30px', // Rounded corners
+              outline: 'none',
+              flex: 1, // Allows input to take available space
+            }}
+          />
+          <IconButton
+            onClick={handleSearch}
+            style={{
+              marginLeft: '-50px', // Adjust this to overlap the button with the input field
+              height: '30px', // Match the height of the input field
+              borderRadius: '0 16px 16px 0', // Rounded right corners
+              color: 'grey',
+            }}
+          >
+            <SearchIcon />
+          </IconButton>
+        </div>
       </div>
-
-      {/* Display the backdrop image if the backdropPath exists */}
-      {/* {backdropPath && (
-        <div
-          style={{
-            marginTop: '20px',
-            width: '100%',
-            height: '200px',
-            backgroundImage: `url(https://image.tmdb.org/t/p/w1280${backdropPath})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            borderRadius: '16px',
-          }}
-        />
-      )} */}
     </div>
   );
 };

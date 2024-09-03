@@ -40,10 +40,11 @@ const MovieDetail = () => {
         return <div>No movie details found.</div>;
       }
 
+    const backdropUrl = `https://image.tmdb.org/t/p/original${movie.backdropPath}`;
 
   return (
     <div className="movie-detail-container">
-      <div className="movie-detail-header">
+      <div className="movie-detail-header" style={{ '--backdrop-url': `url(${backdropUrl})` }}>
         <h1>{movie.title}</h1>
         {/* Add more header content here */}
       </div>
