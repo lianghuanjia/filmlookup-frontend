@@ -129,3 +129,27 @@
   text-overflow: ellipsis;
 }
 
+/* For movie detail page */
+.movie-detail-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.movie-detail-header {
+  background-color: #020283; /* Example background color */
+  padding: 20px;
+  width: 100vw;
+  height: 570px;
+  margin-left: calc(-50vw + 50%); /* Center it relative to the viewport */
+  left: 50%; 
+  right: 50%;
+  box-sizing: border-box; /* Ensure padding does not affect the width */
+}
+
+.movie-detail-content {
+  background-color: #ad4444; /* Example background color */
+  padding: 20px;
+  margin: 20px 10px; /* 10px gap on the left and right */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow for depth */
+}

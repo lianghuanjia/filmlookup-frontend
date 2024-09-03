@@ -42,8 +42,15 @@ const MovieDetail = () => {
 
 
   return (
-    <div>
-      <h1>{movie.title}</h1>
+    <div className="movie-detail-container">
+      <div className="movie-detail-header">
+        <h1>{movie.title}</h1>
+        {/* Add more header content here */}
+      </div>
+      <div className="movie-detail-content">
+        <p>{movie.overview}</p>
+        {/* Add more content here */}
+      </div>
     </div>
   );
 };
