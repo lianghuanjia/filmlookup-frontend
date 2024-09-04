@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Rating from '@mui/material/Rating';
+import Stack from '@mui/material/Stack';
 
 const MovieDetail = () => {
     const { id } = useParams(); // Get the movie_id from the React URL that directs to this page
@@ -49,14 +51,51 @@ const MovieDetail = () => {
             <div className="header-left">
                 <img src={posterUrl} alt={`${movie.title} Poster`} className="movie-detail-poster-image" />
             </div>
-            <div class="header-right">
-                <h1>{movie.title}</h1>
+            <div className="header-right">
+                <div className="movie-detail-movie-title">
+                    {movie.title}
+                    <div className="year-after-title">
+                        ({movie.releaseTime.slice(0, 4)})
+                    </div>
+                </div>
                 <p className="movie-tagline">"{movie.tagline}"</p>
-                <div className="movie-rating">Rating: {movie.rating}</div>
-                <div className="movie-genres">Genres: {movie.genres}</div>
-                <div className="movie-runtime">Running Time: {movie.runtimeMinutes} minutes</div>
-                <div className="movie-release-time">Release Date: {movie.releaseTime}</div>
-                <p className="movie-overview">Overview: {movie.overview}</p>
+                <div className="movie-rating">
+                    <Stack spacing={1}>
+                        <Rating
+                        name="ten-star-rating-read"
+                        value={movie.rating}  /* Scale the rating to fit within 5 stars */
+                        max={10}
+                        precision={0.5}
+                        readOnly
+                        />
+                    </Stack>
+                    <div className="rating-after-stars">
+                        {movie.rating.toFixed(1) + " / 10"}
+                    </div>
+                </div>
+                <div className="movie-detail-page-movie-overview">
+                    <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Overview:</span> 
+                    <p className='movie-detail-page-movie-overview-paragraph'>{movie.overview}</p>
+                </div>
+                <div className="movie-genres">
+                    <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Genres:</span>
+                    <span style={{ marginLeft: '20px' }}>{movie.genres}</span>
+                </div>
+                <div className="movie-runtime">
+                    <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Running Time:</span>
+                    <span style={{ marginLeft: '20px' }}>
+                        {Math.floor(movie.runtimeMinutes / 60)} hr {movie.runtimeMinutes % 60} min
+                    </span>
+                </div>
+                <div className="movie-release-time">
+                    <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Release Date:</span>
+                    <span style={{ marginLeft: '20px' }}>
+                        {movie.releaseTime && (() => {
+                        const [year, month, day] = movie.releaseTime.split('-');
+                        return `${month}/${day}/${year}`;
+                        })()}
+                    </span>
+                </div>
             </div>
         </div>
         <div className="movie-detail-content">
