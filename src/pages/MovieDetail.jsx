@@ -47,7 +47,11 @@ const MovieDetail = () => {
 
   return (
     <div className="movie-detail-container">
-        <div className="movie-detail-header" style={{ '--backdrop-url': `url(${backdropUrl})` }}>
+        <div className="movie-detail-header"
+        style={{
+            '--backdrop-url': `url("${backdropUrl}")`,  // Ensure the URL is quoted properly
+        }}
+        >
             <div className="header-left">
                 <img src={posterUrl} alt={`${movie.title} Poster`} className="movie-detail-poster-image" />
             </div>

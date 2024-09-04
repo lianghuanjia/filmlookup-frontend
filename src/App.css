@@ -154,7 +154,7 @@
 }
 
 .movie-detail-header {
-  background-color: #a6a6ab; /* Example background color */
+  /* background-color: #a6a6ab; */
   /* background-image: var(--backdrop-url); 
   background-size: cover;
   background-position: center; */
@@ -165,7 +165,28 @@
   box-sizing: border-box; /* Ensure padding does not affect the width */
   position: relative; /* Ensure it stays in place */
   display: flex; /* Use flexbox to align content side by side */
+  overflow: hidden; /* Ensure content doesn't overflow */
 }
+
+.movie-detail-header::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  right: 0;
+  bottom: 0;
+  background-image: var(--backdrop-url); /* Use the backdrop URL */
+  background-size: cover;
+  background-position: center; /* Shift the background image towards the right */
+  background-repeat: no-repeat;
+  
+  /* Apply effects only to the background image */
+  filter:   grayscale(30%) contrast(1.2) brightness(0.8) saturate(1) blur(1.5px); /* Darken and saturate the image */
+  transform: scale(1.5); /* Slight magnification effect */
+  
+  z-index: -1; /* Ensure the pseudo-element is behind the content */
+}
+
 
 .header-left {
   width: 26%; /* Width is 40% of the parent container */
