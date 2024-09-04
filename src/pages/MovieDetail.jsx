@@ -28,19 +28,19 @@ const MovieDetail = () => {
         };
     
         fetchMovieDetails(); // Fetch movie details when the component mounts
-      }, [id]); // Dependency array with id to re-fetch if the id changes
-    
-      if (loading) {
-        return <div>Loading...</div>;
-      }
-    
-      if (error) {
-        return <div>Error: {error}</div>;
-      }
-    
-      if (!movie) {
-        return <div>No movie details found.</div>;
-      }
+    }, [id]); // Dependency array with id to re-fetch if the id changes
+
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+  
+    if (error) {
+      return <div>Error: {error}</div>;
+    }
+  
+    if (!movie) {
+      return <div>No movie details found.</div>;
+    }
 
     const backdropUrl = `https://image.tmdb.org/t/p/original${movie.backdropPath}`;
     const posterUrl = `https://image.tmdb.org/t/p/w500${movie.posterPath}`;
@@ -62,7 +62,9 @@ const MovieDetail = () => {
                         ({movie.releaseTime.slice(0, 4)})
                     </div>
                 </div>
-                <p className="movie-tagline">"{movie.tagline}"</p>
+                <p className="movie-tagline">
+                    {movie.tagline ? `"${movie.tagline}"` : null}
+                </p>
                 <div className="movie-rating">
                     <Stack spacing={1}>
                         <Rating
@@ -71,6 +73,11 @@ const MovieDetail = () => {
                         max={10}
                         precision={0.5}
                         readOnly
+                        sx={{
+                            "& .MuiRating-iconEmpty": {
+                              color: "white"  /* Set the color of the outline to white */
+                            },
+                          }}
                         />
                     </Stack>
                     <div className="rating-after-stars">
@@ -95,8 +102,13 @@ const MovieDetail = () => {
                     <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Release Date:</span>
                     <span style={{ marginLeft: '20px' }}>
                         {movie.releaseTime && (() => {
-                        const [year, month, day] = movie.releaseTime.split('-');
-                        return `${month}/${day}/${year}`;
+                            const parts = movie.releaseTime.split('-');
+                            if (parts.length === 3) {
+                            const [year, month, day] = parts;
+                            return `${month}/${day}/${year}`;
+                            } else if (parts.length === 1) {
+                            return parts[0];  // Just return the year if only the year is available
+                            }
                         })()}
                     </span>
                 </div>

@@ -180,8 +180,13 @@
   background-position: center; /* Shift the background image towards the right */
   background-repeat: no-repeat;
   
+  /* Apply a color overlay */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  background-blend-mode: overlay; /* Blend the overlay with the backdrop */
+
+
   /* Apply effects only to the background image */
-  filter:   grayscale(30%) contrast(1.2) brightness(0.8) saturate(1) blur(1.5px); /* Darken and saturate the image */
+  filter:   grayscale(30%) contrast(1.2) brightness(0.8) saturate(1) blur(0.8px); /* Darken and saturate the image */
   transform: scale(1.5); /* Slight magnification effect */
   
   z-index: -1; /* Ensure the pseudo-element is behind the content */
@@ -217,10 +222,16 @@
   margin-right: 100px;
   align-items: flex-start; /* Align all child elements (divs, etc.) to the left */
   justify-content: center; /* Center the content vertically */
-  color: rgb(61, 59, 59); /* Adjust text color for better readability */
+  color: white; /* Adjust text color for better readability */
   flex-shrink: 0;
 }
 
+/* Add a media query to set a fixed width when the window reaches a certain size */
+@media (max-width: 1200px) {
+  .header-right {
+    width: 600px; /* Set a fixed width when the screen is smaller */
+  }
+}
 
 .movie-detail-content {
   background-color: #ad4444; /* Example background color */
@@ -234,7 +245,7 @@
   font-weight: bold; /* h1 elements are typically bold */
   margin-bottom: 5px; /* Keep your existing margin */
   line-height: 1.2; /* Adjust line height for readability */
-  color: #181818; /* You can set a custom color for the title */
+  color: #fbfbfb; /* You can set a custom color for the title */
 }
 
 .year-after-title {
@@ -246,12 +257,12 @@
 
 .movie-tagline {
   font-size:1.3rem;
-  font-style: italic;
+  font-style: oblique 90deg;
   line-height: 1; /* Adjust line height for readability */
   margin-top: 0;
   margin-left: 150px;
   margin-bottom: 25px;
-  
+  color: rgb(255, 255, 255);
 }
 
 .movie-rating {
@@ -260,7 +271,7 @@
   display: flex;
   align-items: center; /* Align the star and the text vertically */
   font-size: 1.2rem; /* Adjust the font size for the rating text */
-  color: #333; /* Set the color for the rating text */
+  color: #ffffff; /* Set the color for the rating text */
 }
 
 .rating-star {
