@@ -46,12 +46,17 @@ const MovieDetail = () => {
   return (
     <div className="movie-detail-container">
         <div className="movie-detail-header" style={{ '--backdrop-url': `url(${backdropUrl})` }}>
-            <div class="header-left">
+            <div className="header-left">
                 <img src={posterUrl} alt={`${movie.title} Poster`} className="movie-detail-poster-image" />
             </div>
             <div class="header-right">
                 <h1>{movie.title}</h1>
-                {/* Add more header content here */}
+                <p className="movie-tagline">"{movie.tagline}"</p>
+                <div className="movie-rating">Rating: {movie.rating}</div>
+                <div className="movie-genres">Genres: {movie.genres}</div>
+                <div className="movie-runtime">Running Time: {movie.runtimeMinutes} minutes</div>
+                <div className="movie-release-time">Release Date: {movie.releaseTime}</div>
+                <p className="movie-overview">Overview: {movie.overview}</p>
             </div>
         </div>
         <div className="movie-detail-content">
