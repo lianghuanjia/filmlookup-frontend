@@ -154,10 +154,6 @@
 }
 
 .movie-detail-header {
-  /* background-color: #a6a6ab; */
-  /* background-image: var(--backdrop-url); 
-  background-size: cover;
-  background-position: center; */
   padding: 20px;
   width: 100vw;
   height: 570px; /* Set the maximum height to 570px */
@@ -181,7 +177,7 @@
   background-repeat: no-repeat;
   
   /* Apply a color overlay */
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  background-color: rgba(59, 59, 59, 0.5); /* Semi-transparent black overlay */
   background-blend-mode: overlay; /* Blend the overlay with the backdrop */
 
 
@@ -195,9 +191,9 @@
 
 .header-left {
   width: 26%; /* Width is 40% of the parent container */
-  min-width: 303px; /* Set a minimum width for the poster */
+  min-width: 333px; /* Set a minimum width for the poster */
   height: 100%; 
-  min-height: 512px; /* Set a minimum height for the poster */
+  min-height: 542px; /* Set a minimum height for the poster */
   display: flex;
   justify-content: flex-end; /* Align items to the right side */
   flex-shrink: 0; /* Prevent the left header from shrinking */
@@ -210,15 +206,18 @@
   max-width: 303px; /* The image won't get larger than 303px */
   height: 100%;
   max-height: 512px;
+  margin-right: 11px;
   object-fit: cover; /* Ensure the image covers the area without distortion */
   border-radius: 8px; /* Optional: Add some border radius for a rounded effect */
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.5), /* Light shadow all around */
+              0 4px 15px rgba(0, 0, 0, 0.1); /* Slight dark shadow for depth */
 }
 
 .header-right {
   width: 74%;
   display: flex;
   flex-direction: column; /* Arrange content vertically */
-  margin-left: 30px;
+  margin-left: 25px;
   margin-right: 100px;
   align-items: flex-start; /* Align all child elements (divs, etc.) to the left */
   justify-content: center; /* Center the content vertically */
@@ -229,15 +228,8 @@
 /* Add a media query to set a fixed width when the window reaches a certain size */
 @media (max-width: 1200px) {
   .header-right {
-    width: 600px; /* Set a fixed width when the screen is smaller */
+    width: 1000px; /* Set a fixed width when the screen is smaller */
   }
-}
-
-.movie-detail-content {
-  background-color: #ad4444; /* Example background color */
-  padding: 20px;
-  margin: 20px 10px; /* 10px gap on the left and right */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow for depth */
 }
 
 .movie-detail-movie-title {
@@ -318,4 +310,12 @@
   margin-left: 20px;
   margin-right:100px;
   margin-top:0;
+}
+
+
+.movie-detail-content {
+  background-color: #ad4444; /* Example background color */
+  padding: 20px;
+  margin: 20px 10px; /* 10px gap on the left and right */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow for depth */
 }

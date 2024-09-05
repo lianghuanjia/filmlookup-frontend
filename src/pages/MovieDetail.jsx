@@ -42,7 +42,7 @@ const MovieDetail = () => {
       return <div>No movie details found.</div>;
     }
 
-    const backdropUrl = `https://image.tmdb.org/t/p/original${movie.backdropPath}`;
+    const backdropUrl = `https://image.tmdb.org/t/p/w1280${movie.backdropPath}`;
     const posterUrl = `https://image.tmdb.org/t/p/w500${movie.posterPath}`;
 
   return (
