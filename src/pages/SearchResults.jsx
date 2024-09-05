@@ -7,29 +7,16 @@ const SearchResults = () => {
   const navigate = useNavigate();
   const movies = location.state?.movies || [];
 
-  const generateRandomDate = () => {
-    const start = new Date(2000, 0, 1).getTime(); 
-    const end = new Date(2010, 11, 31).getTime(); 
-    const randomDate = new Date(start + Math.random() * (end - start));
-    return randomDate;
-  };
-
-  const generateRandomMonthDay = (year) => {
-    const randomMonth = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
-    const randomDay = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
-    return new Date(year, randomMonth, randomDay);
-  };
-
   const formatDateToHumanReadable = (date) => {
     return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
   };
 
   const formatReleaseTime = (releaseTime) => {
-    if (!releaseTime || isNaN(new Date(releaseTime).getTime())) {
-      return formatDateToHumanReadable(generateRandomDate());
-    }
+    // if (!releaseTime || isNaN(new Date(releaseTime).getTime())) {
+    //   return formatDateToHumanReadable(generateRandomDate());
+    // }
     if (/^\d{4}$/.test(releaseTime)) {
-      return formatDateToHumanReadable(generateRandomMonthDay(releaseTime));
+      return releaseTime;
     }
     return formatDateToHumanReadable(new Date(releaseTime));
   };
@@ -39,8 +26,8 @@ const SearchResults = () => {
   };
 
   return (
-    <div>
-      <h1>Search Results</h1>
+    <div className="search-results-contents-other-than-header">
+      {/* <h1>Search Results</h1> */}
       {movies.length > 0 ? (
         <div className="results-container">
           {movies.map((movie) => (
