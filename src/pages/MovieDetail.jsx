@@ -131,32 +131,40 @@ const MovieDetail = () => {
         </div>
         <div className="movie-detail-content">
             <div className="movie-detail-content-left">
-      <div className="top-cast-wrapper">
-        <button className="scroll-button left" onClick={scrollLeft}>
-          &lt;
-        </button>
-        <div className="top-cast" ref={castRef}>
-          {movie.crewMemberList.map((member) => (
-            <div className="crew-member" key={member.personId}>
-              <img
-                src={`https://image.tmdb.org/t/p/w200${member.profilePath}`}
-                alt={member.name}
-                className="profile-pic"
-              />
-              <div className="name">{member.name}</div>
+                <div className="top-cast-wrapper">
+                    <button className="scroll-button left" onClick={scrollLeft}>
+                    &lt;
+                    </button>
+                    <div className="top-cast" ref={castRef}>
+                    {movie.crewMemberList.map((member) => (
+                        <div className="crew-member" key={member.personId}>
+                        <img
+                            src={`https://image.tmdb.org/t/p/w200${member.profilePath}`}
+                            alt={member.name}
+                            className="profile-pic"
+                        />
+                        <div className="name">{member.name}</div>
+                        </div>
+                    ))}
+                    </div>
+                    <button className="scroll-button right" onClick={scrollRight}>
+                    &gt;
+                    </button>
+                </div>
             </div>
-          ))}
-        </div>
-        <button className="scroll-button right" onClick={scrollRight}>
-          &gt;
-        </button>
-      </div>
 
-            </div>
             <div className="movie-detail-content-right">
-                {movie.overview}
+                <div className="budget">
+                    <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Budget</span>
+                    <span>{movie.budget}</span>
+                </div>
+
+                <div className="revenue">
+                    <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Revenue</span>
+                    <span>{movie.revenue}</span>
+                </div>
             </div>
-            {/* Add more content here */}
+
         </div>
     </div>
   );

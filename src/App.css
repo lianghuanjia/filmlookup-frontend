@@ -330,12 +330,8 @@
 
 .movie-detail-content-left {
   width: 70%;
-  /* background-color: #737272; */
-}
-
-.movie-detail-content-right {
-  width: 30%;
-  background-color: #835b5b;
+  flex-shrink: 0; /* Prevent shrinking */
+  min-width: 70%; /* Ensure the content doesn't shrink below 500px */
 }
 
 .top-cast-wrapper {
@@ -441,4 +437,29 @@
   background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
   z-index: 1; /* Make sure it’s above the content but below the scroll button */
   pointer-events: none; /* Allow clicks to pass through */
+}
+
+
+.movie-detail-content-right {
+  width: 30%;
+  padding-left: 3%;
+  display: flex; /* Use flexbox to align items */
+  flex-direction: column; /* Elements stack vertically */
+  align-items: flex-start;
+}
+
+.budget {
+  display: flex; /* Use flexbox to align items */
+  flex-direction: column; /* Elements stack vertically */
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.revenue {
+  display: flex; /* Use flexbox to align items */
+  flex-direction: column; /* Elements stack vertically */
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
