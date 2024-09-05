@@ -448,18 +448,44 @@
   align-items: flex-start;
 }
 
+.director {
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .budget {
-  display: flex; /* Use flexbox to align items */
-  flex-direction: column; /* Elements stack vertically */
+  display: flex; 
+  flex-direction: column; 
   align-items: flex-start;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
 .revenue {
-  display: flex; /* Use flexbox to align items */
-  flex-direction: column; /* Elements stack vertically */
+  display: flex; 
+  flex-direction: column; 
   align-items: flex-start;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.other-names-div {
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.other-names-content {
+  display: flex; 
+  flex-direction: column; 
+  align-items: start;
+  height: 30%; /* Set your desired height */
+  width: 80%;  /* Set your desired width */
+  overflow: auto; /* Enable scrolling if content exceeds height or width */
+  white-space: nowrap; /* Prevent text from wrapping */
 }

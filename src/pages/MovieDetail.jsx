@@ -154,14 +154,32 @@ const MovieDetail = () => {
             </div>
 
             <div className="movie-detail-content-right">
+                {movie.crewMemberList && movie.crewMemberList.find(member => member.job === 'director') && (
+                <div className="director">
+                    <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Director</span>
+                    <span>{movie.crewMemberList.find(member => member.job === 'director').name}</span>
+                </div>
+                )}
                 <div className="budget">
                     <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Budget</span>
-                    <span>{movie.budget}</span>
+                    <span>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(movie.budget)}</span>
                 </div>
-
                 <div className="revenue">
                     <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Revenue</span>
-                    <span>{movie.revenue}</span>
+                    <span>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(movie.revenue)}</span>
+                </div>
+                <div className="other-names-div">
+                    <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Other names</span>
+                    {movie.otherNames && (
+                        <div className="other-names-content">
+                            {movie.otherNames.split(',').map((name, index) => (
+                                <span key={index}>
+                                    {name}
+                                    <br />
+                                </span>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 
