@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../App.css'; // Import the CSS file
 
@@ -6,6 +6,17 @@ const SearchResults = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const movies = location.state?.movies || [];
+  const searchQuery = location.state?.searchQuery || '';
+
+  // Dynamically set the document title based on the search query
+  useEffect(() => {
+    if (searchQuery) {
+      document.title = `Results for: ${searchQuery}`;
+    } else {
+      document.title = 'Results';
+    }
+  }, [searchQuery]); // The effect will run whenever the searchQuery changes
+
 
   const formatDateToHumanReadable = (date) => {
     return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
@@ -21,20 +32,29 @@ const SearchResults = () => {
     return formatDateToHumanReadable(new Date(releaseTime));
   };
 
-  const handleMovieClick = (id) => {
-    navigate(`/movie/${id}`); // Navigate to the MovieDetail page with the movie ID
+  const handleMovieClick = (id, title) => {
+    console.log(title);
+    navigate(`/movie/${id}`, {state: {movieTitle: title}}); // Navigate to the MovieDetail page with the movie ID and movie title
   };
 
   return (
     <div className="search-results-contents-other-than-header">
-      {/* <h1>Search Results</h1> */}
+        {/* Search Bar */}
+        <div className="search-bar-wrapper">
+          <input 
+            type="text" 
+            placeholder="Search for movies..." 
+            className="search-bar-input"
+          />
+          <button className="search-bar-button">Search</button>
+        </div>
       {movies.length > 0 ? (
         <div className="results-container">
           {movies.map((movie) => (
             <div 
               key={movie.id} 
               className="movie-block"
-              onClick={() => handleMovieClick(movie.id)} // Handle click event
+              onClick={() => handleMovieClick(movie.id, movie.title)} // Handle click event
               style={{ cursor: 'pointer' }}
               >
               <img

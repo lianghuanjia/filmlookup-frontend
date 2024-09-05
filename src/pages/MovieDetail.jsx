@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 
@@ -9,6 +9,13 @@ const MovieDetail = () => {
     const [movie, setMovie] = useState(null); // State to store the movie details
     const [loading, setLoading] = useState(true); // State to handle loading
     const [error, setError] = useState(null); // State to handle errors
+    const location = useLocation();
+    const movieTitle = location.state?.movieTitle || 'Movie Details'; // Get the movie title from the state in the page that directs to this page
+
+    // Dynamically set the document title based on the movie title
+    useEffect(() => {
+        document.title = movieTitle;
+    }, [movieTitle]);
   
     useEffect(() => {
         // Function to fetch movie details from the backend
