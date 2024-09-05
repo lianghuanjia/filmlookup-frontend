@@ -44,7 +44,7 @@ const MovieDetail = () => {
     }
 
     const backdropUrl = `https://image.tmdb.org/t/p/w1280${movie.backdropPath}`;
-    const posterUrl = `https://image.tmdb.org/t/p/w500${movie.posterPath}`;
+    const posterUrl = `https://image.tmdb.org/t/p/w780${movie.posterPath}`;
 
     const scrollLeft = () => {
         castRef.current.scrollBy({
@@ -105,17 +105,15 @@ const MovieDetail = () => {
                 </div>
                 <div className="movie-genres">
                     <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Genres:</span>
-                    <span style={{ marginLeft: '20px' }}>{movie.genres}</span>
+                    <span>{movie.genres}</span>
                 </div>
                 <div className="movie-runtime">
                     <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Running Time:</span>
-                    <span style={{ marginLeft: '20px' }}>
-                        {Math.floor(movie.runtimeMinutes / 60)} hr {movie.runtimeMinutes % 60} min
-                    </span>
+                    <span>{Math.floor(movie.runtimeMinutes / 60)} hr {movie.runtimeMinutes % 60} min </span>
                 </div>
                 <div className="movie-release-time">
                     <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Release Date:</span>
-                    <span style={{ marginLeft: '20px' }}>
+                    <span>
                         {movie.releaseTime && (() => {
                             const parts = movie.releaseTime.split('-');
                             if (parts.length === 3) {
@@ -131,6 +129,7 @@ const MovieDetail = () => {
         </div>
         <div className="movie-detail-content">
             <div className="movie-detail-content-left">
+                <div className="top-movie-crew">Top Movie Crew</div>
                 <div className="top-cast-wrapper">
                     <button className="scroll-button left" onClick={scrollLeft}>
                     &lt;
@@ -139,7 +138,7 @@ const MovieDetail = () => {
                     {movie.crewMemberList.map((member) => (
                         <div className="crew-member" key={member.personId}>
                         <img
-                            src={`https://image.tmdb.org/t/p/w200${member.profilePath}`}
+                            src={`https://image.tmdb.org/t/p/w500${member.profilePath}`}
                             alt={member.name}
                             className="profile-pic"
                         />

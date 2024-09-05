@@ -314,7 +314,6 @@
 
 .movie-detail-page-movie-overview-paragraph {
   text-align: left;
-  margin-left: 20px;
   margin-right:100px;
   margin-top:0;
 }
@@ -329,9 +328,19 @@
 }
 
 .movie-detail-content-left {
+  justify-content: flex-start;  /* Align content horizontally to the left */
+  align-items: flex-start;      /* Align content vertically to the top/left */
   width: 70%;
   flex-shrink: 0; /* Prevent shrinking */
   min-width: 70%; /* Ensure the content doesn't shrink below 500px */
+}
+
+.top-movie-crew {
+  display: flex;
+  margin-top: 10px;
+  margin-left: 32px;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .top-cast-wrapper {
@@ -485,7 +494,7 @@
   flex-direction: column; 
   align-items: start;
   height: 30%; /* Set your desired height */
-  width: 80%;  /* Set your desired width */
+  width: 100%;  /* Set your desired width */
   overflow: auto; /* Enable scrolling if content exceeds height or width */
   white-space: nowrap; /* Prevent text from wrapping */
 }
