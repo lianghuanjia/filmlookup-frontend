@@ -115,7 +115,23 @@ const MovieDetail = () => {
             </div>
         </div>
         <div className="movie-detail-content">
-            <p>{movie.overview}</p>
+            <div className="movie-detail-content-left">
+                <div className="top-cast">
+                {movie.crewMemberList.map((member) => (
+                    <div className="crew-member" key={member.personId}>
+                        <img
+                            src={`https://image.tmdb.org/t/p/w200${member.profilePath}`}
+                            alt={member.name}
+                            className="profile-pic"
+                        />
+                        <div className="name">{member.name}</div>
+                    </div>
+                ))}
+                </div>
+            </div>
+            <div className="movie-detail-content-right">
+                {movie.overview}
+            </div>
             {/* Add more content here */}
         </div>
     </div>

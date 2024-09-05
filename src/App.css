@@ -321,8 +321,53 @@
 
 
 .movie-detail-content {
-  background-color: #ad4444; /* Example background color */
   padding: 20px;
-  margin: 20px 10px; /* 10px gap on the left and right */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow for depth */
+  margin-top: 30px;
+  margin-left: 3%;
+  margin-right: 3%;
+  display: flex; /* Enables horizontal layout */
+}
+
+.movie-detail-content-left {
+  width: 70%;
+  background-color: #737272;
+}
+
+.movie-detail-content-right {
+  width: 30%;
+  background-color: #835b5b;
+}
+
+.top-cast {
+  display: flex;
+  flex-wrap: wrap; /* Wrap the items if the container is too small */
+  gap: 20px; /* Add space between crew members */
+  padding: 20px;
+  justify-content: center; /* Center the items horizontally */
+}
+
+.crew-member {
+  display: flex;
+  flex-direction: column; /* Make sure the picture is on top and the name below */
+  align-items: center; /* Center the content */
+  background-color: #fff; /* White background for the card */
+  border-radius: 15px; /* Round corners for the card */
+  padding-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for some depth */
+  max-width: 150px; /* Control the width of the card */
+  overflow: hidden; /* Ensures the image fits within rounded borders */
+}
+
+.profile-pic {
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* Ensures the image covers the container without distortion */
+  border-top-left-radius: 10px; /* Match the parent's border radius */
+  border-top-right-radius: 10px; /* Match the parent's border radius */
+}
+
+.name {
+  margin-top: 10px;
+  font-weight: bold; /* Make the name bold */
+  text-align: center; /* Center the text */
 }
