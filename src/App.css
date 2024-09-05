@@ -330,7 +330,7 @@
 
 .movie-detail-content-left {
   width: 70%;
-  background-color: #737272;
+  /* background-color: #737272; */
 }
 
 .movie-detail-content-right {
@@ -338,36 +338,100 @@
   background-color: #835b5b;
 }
 
+.top-cast-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 90%;
+  overflow: hidden; /* Hide the overflow of the children */
+}
+
 .top-cast {
   display: flex;
-  flex-wrap: wrap; /* Wrap the items if the container is too small */
-  gap: 20px; /* Add space between crew members */
+  overflow-x: auto;
+  scroll-behavior: smooth;
   padding: 20px;
-  justify-content: center; /* Center the items horizontally */
+  gap: 20px;
+  max-width: 100%;
+  white-space: nowrap;
 }
 
 .crew-member {
   display: flex;
-  flex-direction: column; /* Make sure the picture is on top and the name below */
-  align-items: center; /* Center the content */
-  background-color: #fff; /* White background for the card */
-  border-radius: 15px; /* Round corners for the card */
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 10px;
   padding-bottom: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for some depth */
-  max-width: 150px; /* Control the width of the card */
-  overflow: hidden; /* Ensures the image fits within rounded borders */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 150px;
+  flex-shrink: 0; /* Prevent the crew members from shrinking to fit */
+  overflow: hidden;
 }
 
 .profile-pic {
   width: 100%;
   height: auto;
-  object-fit: cover; /* Ensures the image covers the container without distortion */
-  border-top-left-radius: 10px; /* Match the parent's border radius */
-  border-top-right-radius: 10px; /* Match the parent's border radius */
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .name {
   margin-top: 10px;
-  font-weight: bold; /* Make the name bold */
-  text-align: center; /* Center the text */
+  font-weight: bold;
+  text-align: center;
+}
+
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  color: rgb(91, 90, 90);
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1;
+  font-size: 30px; /* Increase the size of the arrow */
+  height: 50px; /* Make the button taller (adjust as needed) */
+  width: 40px; /* Adjust width for more prominent buttons */
+}
+
+.scroll-button.left {
+  left: 0;
+}
+
+.scroll-button.right {
+  right: 0;
+}
+
+/* .scroll-button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+} */
+
+/* Fading effect on the left */
+.top-cast-wrapper::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 50px; /* Adjust the width of the fade */
+  background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  z-index: 1; /* Make sure it’s above the content but below the scroll button */
+  pointer-events: none; /* Allow clicks to pass through */
+}
+
+/* Fading effect on the right */
+.top-cast-wrapper::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 50px; /* Adjust the width of the fade */
+  background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  z-index: 1; /* Make sure it’s above the content but below the scroll button */
+  pointer-events: none; /* Allow clicks to pass through */
 }

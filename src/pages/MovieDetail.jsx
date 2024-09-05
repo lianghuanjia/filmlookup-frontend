@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 
 const MovieDetail = () => {
+    const castRef = useRef(null);
     const { id } = useParams(); // Get the movie_id from the React URL that directs to this page
     const [movie, setMovie] = useState(null); // State to store the movie details
     const [loading, setLoading] = useState(true); // State to handle loading
@@ -44,6 +45,20 @@ const MovieDetail = () => {
 
     const backdropUrl = `https://image.tmdb.org/t/p/w1280${movie.backdropPath}`;
     const posterUrl = `https://image.tmdb.org/t/p/w500${movie.posterPath}`;
+
+    const scrollLeft = () => {
+        castRef.current.scrollBy({
+          left: -300, // Adjust scroll distance as needed
+          behavior: 'smooth',
+        });
+      };
+    
+      const scrollRight = () => {
+        castRef.current.scrollBy({
+          left: 300, // Adjust scroll distance as needed
+          behavior: 'smooth',
+        });
+      };
 
   return (
     <div className="movie-detail-container">
@@ -116,18 +131,27 @@ const MovieDetail = () => {
         </div>
         <div className="movie-detail-content">
             <div className="movie-detail-content-left">
-                <div className="top-cast">
-                {movie.crewMemberList.map((member) => (
-                    <div className="crew-member" key={member.personId}>
-                        <img
-                            src={`https://image.tmdb.org/t/p/w200${member.profilePath}`}
-                            alt={member.name}
-                            className="profile-pic"
-                        />
-                        <div className="name">{member.name}</div>
-                    </div>
-                ))}
-                </div>
+      <div className="top-cast-wrapper">
+        <button className="scroll-button left" onClick={scrollLeft}>
+          &lt;
+        </button>
+        <div className="top-cast" ref={castRef}>
+          {movie.crewMemberList.map((member) => (
+            <div className="crew-member" key={member.personId}>
+              <img
+                src={`https://image.tmdb.org/t/p/w200${member.profilePath}`}
+                alt={member.name}
+                className="profile-pic"
+              />
+              <div className="name">{member.name}</div>
+            </div>
+          ))}
+        </div>
+        <button className="scroll-button right" onClick={scrollRight}>
+          &gt;
+        </button>
+      </div>
+
             </div>
             <div className="movie-detail-content-right">
                 {movie.overview}
