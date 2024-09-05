@@ -381,7 +381,8 @@
   margin-top: 10px;
   text-align: center;
   display: -webkit-box;
-  -webkit-line-clamp: 3;           /* Limit the text to 3 lines */
+  -webkit-line-clamp: 3;           /* Limit the text to 3 lines (WebKit-specific) */
+  line-clamp: 3;                   /* Future compatibility with standard property */
   -webkit-box-orient: vertical;    /* Vertical text orientation */
   overflow: hidden;                /* Hide overflowing content */
   text-overflow: ellipsis;         /* Show ellipsis for overflowing content */
