@@ -342,7 +342,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  width: 90%;
+  width: 100%;
   overflow: hidden; /* Hide the overflow of the children */
 }
 
@@ -350,7 +350,7 @@
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding: 20px;
+  padding: 30px;
   gap: 20px;
   max-width: 100%;
   white-space: nowrap;
@@ -363,7 +363,7 @@
   background-color: #fff;
   border-radius: 10px;
   padding-bottom: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(1, 1, 1, 0.1);
   max-width: 150px;
   flex-shrink: 0; /* Prevent the crew members from shrinking to fit */
   overflow: hidden;
@@ -371,7 +371,7 @@
 
 .profile-pic {
   width: 100%;
-  height: auto;
+  height: 76%;
   object-fit: cover;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -379,8 +379,18 @@
 
 .name {
   margin-top: 10px;
-  font-weight: bold;
   text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;           /* Limit the text to 3 lines */
+  -webkit-box-orient: vertical;    /* Vertical text orientation */
+  overflow: hidden;                /* Hide overflowing content */
+  text-overflow: ellipsis;         /* Show ellipsis for overflowing content */
+  line-height: 1.2em;              /* Set line height */
+  height: auto;                    /* Let the height adjust naturally */
+  max-height: calc(1.2em * 3);     /* Set the maximum height for 3 lines */
+  width: 100%;                     /* Take full width */
+  word-wrap: break-word;           /* Ensure long words break into the next line */
+  white-space: normal;             /* Ensure normal text wrapping */
 }
 
 .scroll-button {
@@ -392,23 +402,19 @@
   border: none;
   padding: 10px;
   cursor: pointer;
-  z-index: 1;
-  font-size: 30px; /* Increase the size of the arrow */
-  height: 50px; /* Make the button taller (adjust as needed) */
+  z-index: 2;
+  font-size: 35px; /* Increase the size of the arrow */
+  height: 50%; /* Make the button taller (adjust as needed) */
   width: 40px; /* Adjust width for more prominent buttons */
 }
 
 .scroll-button.left {
-  left: 0;
+  left: -10px;
 }
 
 .scroll-button.right {
-  right: 0;
+  right: -10px;
 }
-
-/* .scroll-button:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-} */
 
 /* Fading effect on the left */
 .top-cast-wrapper::before {
@@ -417,7 +423,7 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 50px; /* Adjust the width of the fade */
+  width: 2.5%; /* Adjust the width of the fade */
   background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
   z-index: 1; /* Make sure it’s above the content but below the scroll button */
   pointer-events: none; /* Allow clicks to pass through */
@@ -430,7 +436,7 @@
   right: 0;
   top: 0;
   bottom: 0;
-  width: 50px; /* Adjust the width of the fade */
+  width: 2.5%; /* Adjust the width of the fade */
   background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
   z-index: 1; /* Make sure it’s above the content but below the scroll button */
   pointer-events: none; /* Allow clicks to pass through */
