@@ -66,7 +66,7 @@ const SearchBar = ({ onSearch }) => {
               borderRadius: '0 16px 16px 0', // Rounded right corners
               color: 'grey',
             }}
-          >
+            >
             <SearchIcon />
           </IconButton>
         </div>

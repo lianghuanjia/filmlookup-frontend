@@ -1,5 +1,7 @@
-import React, {useEffect } from 'react';
+import React, {useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { IconButton } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import '../App.css'; // Import the CSS file
 
 const SearchResults = () => {
@@ -7,6 +9,7 @@ const SearchResults = () => {
   const navigate = useNavigate();
   const movies = location.state?.movies || [];
   const searchQuery = location.state?.searchQuery || '';
+  const [searchInput, setSearchInput] = useState(searchQuery);
 
   // Dynamically set the document title based on the search query
   useEffect(() => {
@@ -17,6 +20,10 @@ const SearchResults = () => {
     }
   }, [searchQuery]); // The effect will run whenever the searchQuery changes
 
+  // Handle input changes in the search bar
+  const handleInputChange = (e) => {
+    setSearchInput(e.target.value); // Update state with the new input value
+  };
 
   const formatDateToHumanReadable = (date) => {
     return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
@@ -45,8 +52,18 @@ const SearchResults = () => {
             type="text" 
             placeholder="Search for movies..." 
             className="search-bar-input"
+            value={searchInput}
+            onChange={handleInputChange}
           />
-          <button className="search-bar-button">Search</button>
+          <IconButton
+            style={{
+              marginLeft: '-50px', // Adjust this to overlap the button with the input field
+              height: '50px', // Match the height of the input field
+              color: 'grey',
+            }}
+            >
+            <SearchIcon />
+          </IconButton>
         </div>
       {movies.length > 0 ? (
         <div className="results-container">
