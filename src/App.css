@@ -151,8 +151,13 @@
   justify-content: flex-start;
   text-align: left;
   height: 100%;
+  width: 100%;
   margin-left: 11px;
   padding: 11px 0 0 10px;
+}
+
+.movie-details-upper-part {
+  display: flex;
 }
 
 .movie-title h2 {

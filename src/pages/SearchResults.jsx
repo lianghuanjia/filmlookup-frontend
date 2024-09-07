@@ -1,6 +1,6 @@
 import React, {useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { IconButton, Menu, MenuItem, Button, List, ListItemButton, ListItemText } from '@mui/material';
+import { IconButton, Menu, MenuItem, Button, List, ListItemButton, ListItemText, CircularProgress, Box, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import '../App.css'; // Import the CSS file
 
@@ -35,16 +35,92 @@ const SearchResults = () => {
     }
   }, [searchQuery]); // The effect will run whenever the searchQuery changes
 
+  const CircularProgressWithLabel = (props) => {
+    const percentage = (props.value / 10) * 100;
+  
+    // Conditional color based on score value
+    const getColor = (value) => {
+      if (value === 0){
+        return '#d3d3d3';
+      }
+      else if (value > 7) {
+        return '#48D10C'; // Green
+      } else if (value >= 5 && value <= 7) {
+        return '#ECD71F'; // Orange
+      } else {
+        return '#F54B4B'; // Red
+      }
+    };
+
+    return (
+      <Box position="relative" display="inline-flex" sx={{ width: 46, height: 46, marginLeft: 'auto', marginRight: '5%', marginTop: '1%' }}>
+        {/* Grey "trail" part */}
+        <CircularProgress
+          variant="determinate"
+          value={100}  // This always renders the full circle as a grey trail
+          sx={{
+            color: '#e0e0e0',
+            width: '100% !important',   // Force override the default size
+            height: '100% !important',  // Ensure height matches the box size
+            position: 'absolute',
+            strokeLinecap: 'round',  // This makes the circle's ends round
+          }}
+          thickness={6}
+        />
+        {/* Colored progress part */}
+        <CircularProgress
+          variant="determinate"
+          value={percentage}
+          sx={{
+            color: getColor(props.value), // Color depending on score, grey for 0
+            width: '100% !important',   // Force override the default size
+            height: '100% !important',  // Ensure height matches the box size
+            strokeLinecap: 'round',  // This makes the circle's ends round
+          }}
+          thickness={6}
+        />
+        {/* Centered label */}
+        <Box
+          top={0}
+          left={0}
+          bottom={0}
+          right={0}
+          position="absolute"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Typography sx={{ fontSize: '18px', fontWeight: 500 }} component="div" color="textSecondary">
+            {props.value === 0 ? '0.0' : props.value}
+          </Typography>
+        </Box>
+      </Box>
+    );
+  };
+  
+
   // Handle input changes in the search bar
   const handleInputChange = (e) => {
     setSearchInput(e.target.value); // Update state with the new input value
   };
 
   // Handle search button click
-  const handleSearch = () => {
-    if (searchInput.trim()) {
-      console.log(`Searching for: ${searchInput}`);
-      // Call your search API here and fetch results based on searchInput
+  const handleSearch = async () => {
+    if (searchInput.trim() === '') return;
+
+    try {
+      const response = await fetch(`http://localhost:8080/v1/api/movies?title=${encodeURIComponent(searchInput)}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log('Fetched data:', data);
+
+      const moviesData = data.data || []; // Extract the movie data array from 'data'
+      navigate(`/results?title=${encodeURIComponent(searchInput)}`, { state: { movies: moviesData, searchQuery: searchInput } });
+    } catch (error) {
+      console.error('There was a problem with the fetch operation:', error);
     }
   };
 
@@ -98,6 +174,7 @@ const SearchResults = () => {
             onChange={handleInputChange}
           />
           <IconButton
+            onClick={handleSearch}
             style={{
               marginLeft: '-2.4%', // Adjust this to overlap the button with the input field
               height: '50px', // Match the height of the input field
@@ -188,9 +265,13 @@ const SearchResults = () => {
                       className="movie-poster"
                     />
                     <div className="movie-details">
-                      <div className="movie-title">
-                        <h2>{movie.title}</h2>
-                        <p>{formatReleaseTime(movie.releaseTime)}</p>
+                      <div className="movie-details-upper-part">
+                        <div className="movie-title">
+                          <h2>{movie.title}</h2>
+                          <p>{formatReleaseTime(movie.releaseTime)}</p>
+                        </div>
+
+                        <CircularProgressWithLabel value={movie.rating} />
                       </div>
                       {movie.overview && (
                         <div className="movie-overview">

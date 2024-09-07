@@ -11,11 +11,11 @@ const MovieSearch = () => {
   }, []);  // Empty dependency array means this effect runs once, on component mount
 
 
-  const handleSearch = async (query) => {
-    if (query.trim() === '') return;
+  const handleSearch = async (searchedTitle) => {
+    if (searchedTitle.trim() === '') return;
 
     try {
-      const response = await fetch(`http://localhost:8080/v1/api/movies?title=${encodeURIComponent(query)}`);
+      const response = await fetch(`http://localhost:8080/v1/api/movies?title=${encodeURIComponent(searchedTitle)}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -28,7 +28,7 @@ const MovieSearch = () => {
       setMovies(moviesData);
 
       // Navigate to the results page, passing the search results as state
-      navigate('/results', { state: { movies: moviesData, searchQuery: query } });
+      navigate(`/results?title=${encodeURIComponent(searchedTitle)}`, { state: { movies: moviesData, searchQuery: searchedTitle } });
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error);
     }
