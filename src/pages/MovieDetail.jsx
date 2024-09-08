@@ -91,7 +91,7 @@ const MovieDetail = () => {
                     <Stack spacing={1}>
                         <Rating
                         name="ten-star-rating-read"
-                        value={movie.rating}  /* Scale the rating to fit within 5 stars */
+                        value={movie.rating ? movie.rating : 0}  /* Treat null as 0 */
                         max={10}
                         precision={0.5}
                         readOnly
@@ -103,7 +103,7 @@ const MovieDetail = () => {
                         />
                     </Stack>
                     <div className="rating-after-stars">
-                        {movie.rating.toFixed(1) + " / 10"}
+                        {(movie.rating ? movie.rating.toFixed(1) : '0.0') + " / 10"}  {/* Display 0.0 for null ratings */}
                     </div>
                 </div>
                 <div className="movie-detail-page-movie-overview">

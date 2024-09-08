@@ -539,6 +539,7 @@
   align-items: flex-start;
   margin-top: 10px;
   margin-bottom: 10px;
+  min-height: 100px;
 }
 
 .other-names-content {
