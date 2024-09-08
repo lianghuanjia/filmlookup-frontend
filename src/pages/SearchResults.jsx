@@ -8,11 +8,21 @@ import '../App.css'; // Import the CSS file
 const options = [
   'Title (A-Z)',
   'Title (Z-A)',
-  'Rating (Low to High)',
   'Rating (High to Low)',
-  'Release Year (Oldest First)',
-  'Release Year (Newest First)'
+  'Rating (Low to High)',
+  'Release Time (Newest First)',
+  'Release Time (Oldest First)'
 ];
+
+// Create a mapping for the options
+const sortingOptionsMap = {
+  'Title (A-Z)': { orderBy: 'title', direction: 'asc' },
+  'Title (Z-A)': { orderBy: 'title', direction: 'desc' },
+  'Rating (Low to High)': { orderBy: 'rating', direction: 'asc' },
+  'Rating (High to Low)': { orderBy: 'rating', direction: 'desc' },
+  'Release Time (Oldest First)': { orderBy: 'releaseTime', direction: 'asc' },
+  'Release Time (Newest First)': { orderBy: 'releaseTime', direction: 'desc' }
+};
 
 const SearchResults = () => {
   const location = useLocation();
@@ -34,6 +44,24 @@ const SearchResults = () => {
       document.title = 'Results';
     }
   }, [searchQuery]); // The effect will run whenever the searchQuery changes
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    
+    // Default to 'title' for orderBy and 'asc' for direction
+    const orderBy = params.get('orderBy') || 'title';
+    const direction = params.get('direction') || 'asc';
+    
+    // Find the matching option in the options array
+    const selectedOptionIndex = options.findIndex(
+      option => sortingOptionsMap[option].orderBy === orderBy && sortingOptionsMap[option].direction === direction
+    );
+  
+    // Set the selected option based on the URL parameters or defaults
+    if (selectedOptionIndex !== -1) {
+      setSelectedIndex(selectedOptionIndex);
+    }
+  }, [window.location.search]); // Run whenever the search query in the URL changes
 
   const CircularProgressWithLabel = (props) => {
     const percentage = (props.value / 10) * 100;
@@ -91,7 +119,7 @@ const SearchResults = () => {
           justifyContent="center"
         >
           <Typography sx={{ fontSize: '18px', fontWeight: 500 }} component="div" color="textSecondary">
-            {props.value === 0 ? '0.0' : props.value}
+            {props.value === 0 ? '0.0' : props.value.toFixed(1)}
           </Typography>
         </Box>
       </Box>
@@ -105,20 +133,27 @@ const SearchResults = () => {
   };
 
   // Handle search button click
-  const handleSearch = async () => {
-    if (searchInput.trim() === '') return;
+  const handleSearch = async (searchParams) => {
+    const title = searchParams.get('title');
+    if (!title || title.trim() === '') return;
 
     try {
-      const response = await fetch(`http://localhost:8080/v1/api/movies?title=${encodeURIComponent(searchInput)}`);
+      // Build the query string from URLSearchParams
+      const queryString = searchParams.toString();
+  
+      // Use the query string in the fetch call
+      const response = await fetch(`http://localhost:8080/v1/api/movies?${queryString}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
+  
       const data = await response.json();
       console.log('Fetched data:', data);
-
+  
       const moviesData = data.data || []; // Extract the movie data array from 'data'
-      navigate(`/results?title=${encodeURIComponent(searchInput)}`, { state: { movies: moviesData, searchQuery: searchInput } });
+  
+      // Navigate to the results page, passing the search parameters
+      navigate(`/results?${queryString}`, { state: { movies: moviesData, searchQuery: title } });
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error);
     }
@@ -140,7 +175,14 @@ const SearchResults = () => {
   };
 
   const handleApplySorting = () => {
-    console.log("handleApplySorting");
+    const { orderBy, direction } = sortingOptionsMap[options[selectedIndex]];
+    const params = new URLSearchParams(window.location.search);
+    params.set('title', searchInput);
+    params.set('orderBy', orderBy);
+    params.set('direction', direction);
+  
+    // Call handleSearch with the updated parameters
+    handleSearch(params);
   }
   
 
@@ -174,7 +216,7 @@ const SearchResults = () => {
             onChange={handleInputChange}
           />
           <IconButton
-            onClick={handleSearch}
+            onClick={() => handleSearch(new URLSearchParams({ title: searchInput }))}
             style={{
               marginLeft: '-2.4%', // Adjust this to overlap the button with the input field
               height: '50px', // Match the height of the input field
