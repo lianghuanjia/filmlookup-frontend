@@ -160,12 +160,15 @@ const MovieDetail = () => {
             </div>
 
             <div className="movie-detail-content-right">
-                {movie.crewMemberList && movie.crewMemberList.find(member => member.job === 'director') && (
-                <div className="director">
-                    <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Director</span>
-                    <span>{movie.crewMemberList.find(member => member.job === 'director').name}</span>
-                </div>
-                )}
+                {movie.crewMemberList && (() => {
+                    const director = movie.crewMemberList.find(member => member.jobs && member.jobs.includes('director'));
+                    return director && (
+                        <div className="director">
+                        <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Director</span>
+                        <span>{director.name}</span>
+                        </div>
+                    );
+                })()}
                 <div className="budget">
                     <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Budget</span>
                     <span>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(movie.budget)}</span>
