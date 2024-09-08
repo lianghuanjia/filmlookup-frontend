@@ -214,6 +214,11 @@ const SearchResults = () => {
             className="search-bar-input"
             value={searchInput}
             onChange={handleInputChange}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                handleSearch(new URLSearchParams({ title: searchInput }));
+              }
+            }}  // Check for Enter key press
           />
           <IconButton
             onClick={() => handleSearch(new URLSearchParams({ title: searchInput }))}

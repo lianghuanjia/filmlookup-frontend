@@ -15,6 +15,12 @@ const SearchBar = ({ onSearch }) => {
     onSearch(query);
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   // // Fetch the now playing movies when the component mounts
   // useEffect(() => {
   //   const fetchBackdrop = async () => {
@@ -45,6 +51,7 @@ const SearchBar = ({ onSearch }) => {
             type="text"
             value={query}
             onChange={handleInputChange}
+            onKeyDown={handleKeyPress} 
             placeholder="Search for movies..."
             className="custom-movie-search-text"
             style={{
