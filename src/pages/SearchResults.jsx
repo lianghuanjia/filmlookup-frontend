@@ -1,6 +1,6 @@
 import React, {useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { IconButton, Menu, MenuItem, Button, List, ListItemButton, ListItemText, CircularProgress, Box, Typography } from '@mui/material';
+import { IconButton, Menu, MenuItem, Button, List, ListItemButton, ListItemText, CircularProgress, LinearProgress, Box, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import '../App.css'; // Import the CSS file
 
@@ -30,6 +30,7 @@ const SearchResults = () => {
   const movies = location.state?.movies || [];
   const searchQuery = location.state?.searchQuery || '';
   const [searchInput, setSearchInput] = useState(searchQuery);
+  const [loading, setLoading] = useState(false);
 
   // Dropdown state
   const [anchorEl, setAnchorEl] = useState(null);
@@ -137,6 +138,8 @@ const SearchResults = () => {
     const title = searchParams.get('title');
     if (!title || title.trim() === '') return;
 
+    setLoading(true); // Start loading before fetching data
+
     try {
       // Build the query string from URLSearchParams
       const queryString = searchParams.toString();
@@ -156,6 +159,8 @@ const SearchResults = () => {
       navigate(`/results?${queryString}`, { state: { movies: moviesData, searchQuery: title } });
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -231,6 +236,15 @@ const SearchResults = () => {
             <SearchIcon />
           </IconButton>
         </div>
+
+        <div>
+        {loading && (
+          // Show linear progress while loading
+          <Box sx={{ width: '100%', marginBottom: '10px' }}>
+            <LinearProgress variant="indeterminate"/>
+          </Box>
+        )}
+        </div>
       
         <div className='search-results-page-below-search-bar'>
           <div className='search-results-page-below-search-bar-left'>
@@ -293,11 +307,11 @@ const SearchResults = () => {
                 </MenuItem>
               ))}
             </Menu>
-
         </div>
 
           <div className='search-results-page-below-search-bar-right'>
-            {movies.length > 0 ? (
+            { !loading &&
+            movies.length > 0 ? (
               <div className="results-container">
                 {movies.map((movie) => (
                   <div 
@@ -329,7 +343,7 @@ const SearchResults = () => {
                   </div>
                 ))}
               </div>
-            ) : (
+            ) : !loading && (
               <p>No results found.</p>
             )}
           </div>
