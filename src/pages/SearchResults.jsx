@@ -151,10 +151,7 @@ const SearchResults = () => {
       }
   
       const data = await response.json();
-      console.log('Fetched data:', data);
-  
-      const moviesData = data.data || []; // Extract the movie data array from 'data'
-  
+      const moviesData = data.data.movies || []; // Extract the movie data array from 'data'
       // Navigate to the results page, passing the search parameters
       navigate(`/results?${queryString}`, { state: { movies: moviesData, searchQuery: title } });
     } catch (error) {
