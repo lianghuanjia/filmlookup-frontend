@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react';
+import React, {useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IconButton, Menu, MenuItem, Button, List, ListItemButton, ListItemText, CircularProgress, LinearProgress, Box, Typography, Pagination } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -28,14 +28,26 @@ const SearchResults = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [movies, setMovies] = useState([]); 
-  const searchQuery = new URLSearchParams(location.search).get('title') || '';  
-  const [searchInput, setSearchInput] = useState(searchQuery);
+  // const searchQuery = new URLSearchParams(location.search).get('title') || '';  
   const [loading, setLoading] = useState(false);
 
   // Dropdown state
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const open = Boolean(anchorEl);
+
+  // Ref to store cached results
+  const cache = useRef({}); // This will persist between renders
+
+  // Get search query and sorting from URL params
+  const params = new URLSearchParams(location.search);
+  const searchQuery = params.get('title') || '';  
+  const orderBy = params.get('orderBy') || 'title';
+  const direction = params.get('direction') || 'asc';
+
+  const [searchInput, setSearchInput] = useState(searchQuery);
+
+  const cacheKey = `${searchQuery}-${orderBy}-${direction}`;
 
   // Dynamically set the document title based on the search query
   useEffect(() => {
@@ -46,9 +58,22 @@ const SearchResults = () => {
     }
   }, [searchQuery]); // The effect will run whenever the searchQuery changes
 
+// Check the cache before fetching movies
+useEffect(() => {
+  // Check if we have cached data for this query and sorting
+  if (cache.current[cacheKey]) {
+    console.log('Using cached data for:', cacheKey);
+    setMovies(cache.current[cacheKey]); // Use cached data
+  } else {
+    // Only fetch data if it's not already in the cache
+    console.log('Making a network request for:', cacheKey); 
+    fetchMovies(cacheKey);
+  }
+}, [location.key, searchQuery, orderBy, direction, cacheKey]);
+
+
   // Fetch movies when searchQuery changes
-  useEffect(() => {
-    const fetchMovies = async () => {
+  const fetchMovies = async (cacheKey) => {
       if (!searchQuery.trim()) return;
       
       setLoading(true);
@@ -61,16 +86,17 @@ const SearchResults = () => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setMovies(data.data.movies || []);
+        const moviesData = data.data.movies || [];
+        // Store fetched data in the cache using cacheKey
+        console.log(`Caching data for: ${cacheKey}`);
+        cache.current[cacheKey] = moviesData;  // Cache the data
+        setMovies(moviesData);    
       } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
       } finally {
         setLoading(false);
       }
     };
-
-    fetchMovies();
-  }, [location.search]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
