@@ -1,6 +1,6 @@
 import React, {useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { IconButton, Menu, MenuItem, Button, List, ListItemButton, ListItemText, CircularProgress, LinearProgress, Box, Typography } from '@mui/material';
+import { IconButton, Menu, MenuItem, Button, List, ListItemButton, ListItemText, CircularProgress, LinearProgress, Box, Typography, Pagination } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import '../App.css'; // Import the CSS file
 
@@ -27,8 +27,8 @@ const sortingOptionsMap = {
 const SearchResults = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const movies = location.state?.movies || [];
-  const searchQuery = location.state?.searchQuery || '';
+  const [movies, setMovies] = useState([]); 
+  const searchQuery = new URLSearchParams(location.search).get('title') || '';  
   const [searchInput, setSearchInput] = useState(searchQuery);
   const [loading, setLoading] = useState(false);
 
@@ -45,6 +45,32 @@ const SearchResults = () => {
       document.title = 'Results';
     }
   }, [searchQuery]); // The effect will run whenever the searchQuery changes
+
+  // Fetch movies when searchQuery changes
+  useEffect(() => {
+    const fetchMovies = async () => {
+      if (!searchQuery.trim()) return;
+      
+      setLoading(true);
+      try {
+        const params = new URLSearchParams(location.search);
+        const queryString = params.toString();
+        
+        const response = await fetch(`http://localhost:8080/v1/api/movies?${queryString}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setMovies(data.data.movies || []);
+      } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMovies();
+  }, [location.search]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -133,32 +159,14 @@ const SearchResults = () => {
     setSearchInput(e.target.value); // Update state with the new input value
   };
 
-  // Handle search button click
-  const handleSearch = async (searchParams) => {
-    const title = searchParams.get('title');
-    if (!title || title.trim() === '') return;
+  // Handle search button click (or pressing Enter)
+  const handleSearch = () => {
+    if (searchInput.trim() === '') return;
 
-    setLoading(true); // Start loading before fetching data
-
-    try {
-      // Build the query string from URLSearchParams
-      const queryString = searchParams.toString();
-  
-      // Use the query string in the fetch call
-      const response = await fetch(`http://localhost:8080/v1/api/movies?${queryString}`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-  
-      const data = await response.json();
-      const moviesData = data.data.movies || []; // Extract the movie data array from 'data'
-      // Navigate to the results page, passing the search parameters
-      navigate(`/results?${queryString}`, { state: { movies: moviesData, searchQuery: title } });
-    } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
-    } finally {
-      setLoading(false);
-    }
+    // Update the URL and trigger re-fetch by changing the searchQuery in the URL
+    const params = new URLSearchParams(window.location.search);
+    params.set('title', searchInput);
+    navigate(`/results?${params.toString()}`);
   };
 
   // Handle dropdown menu click
@@ -176,16 +184,19 @@ const SearchResults = () => {
     setAnchorEl(null); // Close the dropdown when the menu is closed
   };
 
+  // Handle applying sorting options
   const handleApplySorting = () => {
     const { orderBy, direction } = sortingOptionsMap[options[selectedIndex]];
+    
+    // Use existing params and add sorting info
     const params = new URLSearchParams(window.location.search);
-    params.set('title', searchInput);
+    params.set('title', searchInput); // Keep the current search query
     params.set('orderBy', orderBy);
     params.set('direction', direction);
-  
-    // Call handleSearch with the updated parameters
-    handleSearch(params);
-  }
+
+    // Update the URL with sorting parameters, triggering the useEffect to re-fetch movies
+    navigate(`/results?${params.toString()}`);
+  };
   
 
   const formatDateToHumanReadable = (date) => {
@@ -339,6 +350,30 @@ const SearchResults = () => {
                     </div>
                   </div>
                 ))}
+                {/* Pagination below results */}
+                <div className = "pagination-container">
+                  <Pagination 
+                    count={10}  // totalPages should be calculated based on your movie list size and page size
+                    page={5}   // Bind this to the current page state
+                    onChange={(event, value) => handlePageChange(value)} // Define this handler for page change
+                    shape="rounded"
+                    color="primary"
+                    sx={{
+                      "& .MuiPaginationItem-root": {
+                        borderRadius: '50%', // This will force them to be round
+                        minWidth: '32px', // Minimum width
+                        height: '32px', // Height to match the width for a circular shape
+                      },
+                      "& .Mui-selected": {
+                        backgroundColor: "#B9B9B9",  // Grey background for the selected item
+                        color: "white",           // White text for better contrast
+                        "&:hover": {
+                          backgroundColor: "CBCBCB", // Darker grey when hovering on the selected item
+                        },
+                      },
+                    }}
+                  />
+                </div>
               </div>
             ) : !loading && (
               <p>No results found.</p>
