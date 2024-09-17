@@ -207,6 +207,8 @@ const SearchResults = () => {
     
     const params = new URLSearchParams(window.location.search);
     params.set('title', searchInput);
+    params.set('page', 1);
+    console.log("handle search: ", params.toString());
     navigate(`/results?${params.toString()}`);
   };
 
