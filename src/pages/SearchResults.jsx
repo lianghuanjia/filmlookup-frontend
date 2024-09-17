@@ -30,6 +30,9 @@ const SearchResults = () => {
   const [movies, setMovies] = useState([]); 
   // const searchQuery = new URLSearchParams(location.search).get('title') || '';  
   const [loading, setLoading] = useState(false);
+  const [bypassCache, setBypassCache] = useState(false);  // Bypass cache flag
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   // Dropdown state
   const [anchorEl, setAnchorEl] = useState(null);
@@ -44,10 +47,11 @@ const SearchResults = () => {
   const searchQuery = params.get('title') || '';  
   const orderBy = params.get('orderBy') || 'title';
   const direction = params.get('direction') || 'asc';
+  const page = parseInt(params.get('page'), 10) || 1;
 
   const [searchInput, setSearchInput] = useState(searchQuery);
 
-  const cacheKey = `${searchQuery}-${orderBy}-${direction}`;
+  const cacheKey = `${searchQuery}-${orderBy}-${direction}-${page}`;
 
   // Dynamically set the document title based on the search query
   useEffect(() => {
@@ -58,18 +62,24 @@ const SearchResults = () => {
     }
   }, [searchQuery]); // The effect will run whenever the searchQuery changes
 
-// Check the cache before fetching movies
-useEffect(() => {
-  // Check if we have cached data for this query and sorting
-  if (cache.current[cacheKey]) {
-    console.log('Using cached data for:', cacheKey);
-    setMovies(cache.current[cacheKey]); // Use cached data
-  } else {
-    // Only fetch data if it's not already in the cache
-    console.log('Making a network request for:', cacheKey); 
-    fetchMovies(cacheKey);
-  }
-}, [location.key, searchQuery, orderBy, direction, cacheKey]);
+  // Ensure the cache is checked when navigating forward/backward
+  useEffect(() => {
+    // If cache is bypassed, fetch movies without checking cache
+    if (bypassCache) {
+      fetchMovies(cacheKey);
+      setBypassCache(false); // Reset the bypass flag after the request
+    } else {
+      // Otherwise, use cache if available
+      const cachedData = cache.current[cacheKey];
+      if (cachedData) {
+        setMovies(cachedData);
+        setCurrentPage(cachedData.currentPage);
+        setTotalPages(cachedData.totalPages);
+      } else {
+        fetchMovies(cacheKey); // Fetch data and store in global cache
+      }
+    }
+  }, [location.key, searchQuery, orderBy, direction, page, cacheKey, bypassCache]);
 
 
   // Fetch movies when searchQuery changes
@@ -80,17 +90,20 @@ useEffect(() => {
       try {
         const params = new URLSearchParams(location.search);
         const queryString = params.toString();
-        
+        console.log('Query String:', queryString);
         const response = await fetch(`http://localhost:8080/v1/api/movies?${queryString}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
+        console.log(`Fetched: `, data);
         const moviesData = data.data.movies || [];
         // Store fetched data in the cache using cacheKey
         console.log(`Caching data for: ${cacheKey}`);
         cache.current[cacheKey] = moviesData;  // Cache the data
         setMovies(moviesData);    
+        setCurrentPage(data.data.currentPage);
+        setTotalPages(data.data.totalPages);
       } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
       } finally {
@@ -189,10 +202,20 @@ useEffect(() => {
   const handleSearch = () => {
     if (searchInput.trim() === '') return;
 
-    // Update the URL and trigger re-fetch by changing the searchQuery in the URL
+    // Set bypassCache to true to ensure a new request is made
+    setBypassCache(true);
+    
     const params = new URLSearchParams(window.location.search);
     params.set('title', searchInput);
     navigate(`/results?${params.toString()}`);
+  };
+
+  // Handle page changes from the pagination component
+  const handlePageChange = (event, value) => {
+    console.log("Selected page:",value);
+    params.set('page', value);
+    navigate(`/results?${params.toString()}`);
+    setBypassCache(true);
   };
 
   // Handle dropdown menu click
@@ -214,6 +237,8 @@ useEffect(() => {
   const handleApplySorting = () => {
     const { orderBy, direction } = sortingOptionsMap[options[selectedIndex]];
     
+    setBypassCache(true);
+
     // Use existing params and add sorting info
     const params = new URLSearchParams(window.location.search);
     params.set('title', searchInput); // Keep the current search query
@@ -379,11 +404,13 @@ useEffect(() => {
                 {/* Pagination below results */}
                 <div className = "pagination-container">
                   <Pagination 
-                    count={10}  // totalPages should be calculated based on your movie list size and page size
-                    page={5}   // Bind this to the current page state
-                    onChange={(event, value) => handlePageChange(value)} // Define this handler for page change
+                    count={totalPages} 
+                    page={currentPage}   
+                    onChange={handlePageChange} // Define this handler for page change
                     shape="rounded"
                     color="primary"
+                    siblingCount={3}   // Show 3 pages to the left and right of the current page
+                    boundaryCount={1} 
                     sx={{
                       "& .MuiPaginationItem-root": {
                         borderRadius: '50%', // This will force them to be round
