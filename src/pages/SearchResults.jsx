@@ -6,22 +6,22 @@ import '../App.css'; // Import the CSS file
 
 
 const options = [
-  'Title (A-Z)',
-  'Title (Z-A)',
   'Rating (High to Low)',
   'Rating (Low to High)',
   'Release Time (Newest First)',
-  'Release Time (Oldest First)'
+  'Release Time (Oldest First)',
+  'Title (A-Z)',
+  'Title (Z-A)'
 ];
 
 // Create a mapping for the options
 const sortingOptionsMap = {
-  'Title (A-Z)': { orderBy: 'title', direction: 'asc' },
-  'Title (Z-A)': { orderBy: 'title', direction: 'desc' },
   'Rating (Low to High)': { orderBy: 'rating', direction: 'asc' },
   'Rating (High to Low)': { orderBy: 'rating', direction: 'desc' },
   'Release Time (Oldest First)': { orderBy: 'releaseTime', direction: 'asc' },
-  'Release Time (Newest First)': { orderBy: 'releaseTime', direction: 'desc' }
+  'Release Time (Newest First)': { orderBy: 'releaseTime', direction: 'desc' },
+  'Title (A-Z)': { orderBy: 'title', direction: 'asc' },
+  'Title (Z-A)': { orderBy: 'title', direction: 'desc' }
 };
 
 const SearchResults = () => {
@@ -174,9 +174,9 @@ const SearchResults = () => {
     if (searchInput.trim() === '') return;
 
     const params = new URLSearchParams(window.location.search);
-    params.set('rating', searchInput);
+    params.set('title', searchInput);
     params.set('page', 1);
-    params.set('orderBy', 'title');
+    params.set('orderBy', 'rating');
     params.set('direction', 'desc');
     console.log("handle search: ", params.toString());
     navigate(`/results?${params.toString()}`);
@@ -193,9 +193,27 @@ const SearchResults = () => {
   };
 
   const handleMenuItemClick = (event, index) => {
+    // If the selected index is the same as the currently selected one, do nothing
+    if (index === selectedIndex) {
+      console.log('Same index selected. No need to send request.');
+      setAnchorEl(null);
+      return; // Skip further processing
+    }
+
     setSelectedIndex(index);
     setAnchorEl(null);
+
     console.log(`Selected: ${options[index]}`);
+    const { orderBy, direction } = sortingOptionsMap[options[index]];
+
+    const params = new URLSearchParams(window.location.search);
+    params.set('title', searchInput);
+    params.set('orderBy', orderBy);
+    params.set('direction', direction);
+    params.set('page', 1);
+
+    navigate(`/results?${params.toString()}`, { replace: true });
+
   };
 
   const handleClose = () => {
@@ -211,7 +229,7 @@ const SearchResults = () => {
     params.set('direction', direction);
     params.set('page', 1);
 
-    navigate(`/results?${params.toString()}`);
+    navigate(`/results?${params.toString()}`, { replace: true });
 
     // fetchMovies(); // Call fetchMovies directly after updating the URL
   };
