@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IconButton, Menu, MenuItem, Button, List, ListItemButton, ListItemText, CircularProgress, LinearProgress, Box, Typography, Pagination } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -28,9 +28,7 @@ const SearchResults = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [movies, setMovies] = useState([]); 
-  // const searchQuery = new URLSearchParams(location.search).get('title') || '';  
   const [loading, setLoading] = useState(false);
-  const [bypassCache, setBypassCache] = useState(false);  // Bypass cache flag
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -39,54 +37,34 @@ const SearchResults = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const open = Boolean(anchorEl);
 
-  // Ref to store cached results
-  const cache = useRef({}); // This will persist between renders
-
   // Get search query and sorting from URL params
   const params = new URLSearchParams(location.search);
-  const searchQuery = params.get('title') || '';  
-  const orderBy = params.get('orderBy') || 'title';
-  const direction = params.get('direction') || 'asc';
+  const searchTitle = params.get('title') || '';  
+  const orderBy = params.get('orderBy') || 'rating';
+  const direction = params.get('direction') || 'desc';
   const page = parseInt(params.get('page'), 10) || 1;
 
-  const [searchInput, setSearchInput] = useState(searchQuery);
-
-  const cacheKey = `${searchQuery}-${orderBy}-${direction}-${page}`;
+  const [searchInput, setSearchInput] = useState(searchTitle);
 
   // Dynamically set the document title based on the search query
   useEffect(() => {
-    if (searchQuery) {
-      document.title = `Results for: ${searchQuery}`;
+    if (searchTitle) {
+      document.title = `Results for: ${searchTitle}`;
     } else {
       document.title = 'Results';
     }
-  }, [searchQuery]); // The effect will run whenever the searchQuery changes
-
-  // Ensure the cache is checked when navigating forward/backward
-  useEffect(() => {
-    // If cache is bypassed, fetch movies without checking cache
-    if (bypassCache) {
-      fetchMovies(cacheKey);
-      setBypassCache(false); // Reset the bypass flag after the request
-    } else {
-      // Otherwise, use cache if available
-      const cachedData = cache.current[cacheKey];
-      if (cachedData) {
-        setMovies(cachedData);
-        setCurrentPage(cachedData.currentPage);
-        setTotalPages(cachedData.totalPages);
-      } else {
-        fetchMovies(cacheKey); // Fetch data and store in global cache
-      }
-    }
-  }, [location.key, searchQuery, orderBy, direction, page, cacheKey, bypassCache]);
-
+  }, [searchTitle]);
 
   // Fetch movies when searchQuery changes
-  const fetchMovies = async (cacheKey) => {
-      if (!searchQuery.trim()) return;
+  useEffect(() => {
+    fetchMovies();
+  }, [location.key, searchTitle, orderBy, direction, page]);
+
+  const fetchMovies = async () => {
+      if (!searchTitle.trim()) return;
       
       setLoading(true);
+      const startTime = Date.now();
       try {
         const params = new URLSearchParams(location.search);
         const queryString = params.toString();
@@ -97,10 +75,10 @@ const SearchResults = () => {
         }
         const data = await response.json();
         console.log(`Fetched: `, data);
+        const endTime = Date.now(); // Capture the end time
+        const timeTaken = endTime - startTime; // Calculate the difference (in milliseconds)
+        console.log(`Response time: ${timeTaken}ms`);
         const moviesData = data.data.movies || [];
-        // Store fetched data in the cache using cacheKey
-        console.log(`Caching data for: ${cacheKey}`);
-        cache.current[cacheKey] = moviesData;  // Cache the data
         setMovies(moviesData);    
         setCurrentPage(data.data.currentPage);
         setTotalPages(data.data.totalPages);
@@ -127,12 +105,11 @@ const SearchResults = () => {
     if (selectedOptionIndex !== -1) {
       setSelectedIndex(selectedOptionIndex);
     }
-  }, [window.location.search]); // Run whenever the search query in the URL changes
+  }, [window.location.search]);
 
   const CircularProgressWithLabel = (props) => {
     const percentage = (props.value / 10) * 100;
   
-    // Conditional color based on score value
     const getColor = (value) => {
       if (value === 0){
         return '#d3d3d3';
@@ -148,32 +125,29 @@ const SearchResults = () => {
 
     return (
       <Box position="relative" display="inline-flex" sx={{ width: 46, height: 46, marginLeft: 'auto', marginRight: '5%', marginTop: '1%' }}>
-        {/* Grey "trail" part */}
         <CircularProgress
           variant="determinate"
-          value={100}  // This always renders the full circle as a grey trail
+          value={100}
           sx={{
             color: '#e0e0e0',
-            width: '100% !important',   // Force override the default size
-            height: '100% !important',  // Ensure height matches the box size
+            width: '100% !important',
+            height: '100% !important',
             position: 'absolute',
-            strokeLinecap: 'round',  // This makes the circle's ends round
+            strokeLinecap: 'round',
           }}
           thickness={6}
         />
-        {/* Colored progress part */}
         <CircularProgress
           variant="determinate"
           value={percentage}
           sx={{
-            color: getColor(props.value), // Color depending on score, grey for 0
-            width: '100% !important',   // Force override the default size
-            height: '100% !important',  // Ensure height matches the box size
-            strokeLinecap: 'round',  // This makes the circle's ends round
+            color: getColor(props.value),
+            width: '100% !important',
+            height: '100% !important',
+            strokeLinecap: 'round',
           }}
           thickness={6}
         />
-        {/* Centered label */}
         <Box
           top={0}
           left={0}
@@ -191,75 +165,62 @@ const SearchResults = () => {
       </Box>
     );
   };
-  
 
-  // Handle input changes in the search bar
   const handleInputChange = (e) => {
-    setSearchInput(e.target.value); // Update state with the new input value
+    setSearchInput(e.target.value);
   };
 
-  // Handle search button click (or pressing Enter)
   const handleSearch = () => {
     if (searchInput.trim() === '') return;
 
-    // Set bypassCache to true to ensure a new request is made
-    setBypassCache(true);
-    
     const params = new URLSearchParams(window.location.search);
-    params.set('title', searchInput);
+    params.set('rating', searchInput);
     params.set('page', 1);
+    params.set('orderBy', 'title');
+    params.set('direction', 'desc');
     console.log("handle search: ", params.toString());
     navigate(`/results?${params.toString()}`);
   };
 
-  // Handle page changes from the pagination component
   const handlePageChange = (event, value) => {
-    console.log("Selected page:",value);
+    console.log("Selected page:", value);
     params.set('page', value);
     navigate(`/results?${params.toString()}`);
-    setBypassCache(true);
   };
 
-  // Handle dropdown menu click
   const handleClickListItem = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
-    setAnchorEl(null); // Close the dropdown after selection
+    setAnchorEl(null);
     console.log(`Selected: ${options[index]}`);
   };
 
   const handleClose = () => {
-    setAnchorEl(null); // Close the dropdown when the menu is closed
+    setAnchorEl(null);
   };
 
-  // Handle applying sorting options
   const handleApplySorting = () => {
     const { orderBy, direction } = sortingOptionsMap[options[selectedIndex]];
-    
-    setBypassCache(true);
 
-    // Use existing params and add sorting info
     const params = new URLSearchParams(window.location.search);
-    params.set('title', searchInput); // Keep the current search query
+    params.set('title', searchInput);
     params.set('orderBy', orderBy);
     params.set('direction', direction);
+    params.set('page', 1);
 
-    // Update the URL with sorting parameters, triggering the useEffect to re-fetch movies
     navigate(`/results?${params.toString()}`);
+
+    // fetchMovies(); // Call fetchMovies directly after updating the URL
   };
-  
 
   const formatDateToHumanReadable = (date) => {
     return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
   };
 
   const formatReleaseTime = (releaseTime) => {
-    // if (!releaseTime || isNaN(new Date(releaseTime).getTime())) {
-    //   return formatDateToHumanReadable(generateRandomDate());
-    // }
     if (/^\d{4}$/.test(releaseTime)) {
       return releaseTime;
     }
@@ -267,7 +228,7 @@ const SearchResults = () => {
   };
 
   const handleMovieClick = (id, title) => {
-    navigate(`/movie/${id}`, {state: {movieTitle: title}}); // Navigate to the MovieDetail page with the movie ID and movie title
+    navigate(`/movie/${id}`, { state: { movieTitle: title } });
   };
 
   return (

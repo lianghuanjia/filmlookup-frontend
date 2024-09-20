@@ -81,7 +81,7 @@ const MovieDetail = () => {
                 <div className="movie-detail-movie-title">
                     {movie.title}
                     <div className="year-after-title">
-                        ({movie.releaseTime.slice(0, 4)})
+                        {movie.releaseTime ? `(${movie.releaseTime.slice(0, 4)})` : null}
                     </div>
                 </div>
                 <p className="movie-tagline">

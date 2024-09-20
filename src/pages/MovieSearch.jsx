@@ -12,7 +12,7 @@ const MovieSearch = () => {
 
   const handleSearch = async (searchedTitle) => {
     if (searchedTitle.trim() === '') return;
-      navigate(`/results?title=${encodeURIComponent(searchedTitle)}`);
+      navigate(`/results?title=${encodeURIComponent(searchedTitle)}&orderBy=rating&direction=desc&page=1`);
   };
 
   return (
