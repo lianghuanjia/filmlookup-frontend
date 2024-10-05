@@ -1,8 +1,15 @@
 #root {
-  max-width: 1280px;
+  width: 100%;
+  height: 100vh;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
+  position: fixed; /* Fixes the root element at the top */
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow-y: auto; /* Allow content within root to scroll if needed */
+  box-sizing: border-box; 
 }
 
 .logo {
@@ -39,4 +46,515 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.custom-movie-search-text::placeholder {
+  color: rgb(195, 188, 188); /* Change this to your desired color */
+  opacity: 1;  /* Ensure the color applies fully */
+}
+
+.search-bar-container {
+  margin-top: 100px; /* Adjust this value to position the SearchBar as desired */
+  padding: 0 20px; /* Optional: Add side padding */
+}
+
+
+.search-results-contents-other-than-header {
+  margin-top: 64px;
+}
+
+.search-bar-wrapper{
+  display: flex;
+  width: 100%; /* Take up the full width of the window */
+  max-width: 100vw; /* Ensure it doesn't exceed viewport width */
+  margin-top: 64px; /* Place the search-bar right under the header */
+  height: 50px;
+  padding-left: 5%;
+  padding-right: 5%;
+  border-bottom: 1px solid rgb(214, 214, 214);
+}
+
+.search-bar-input {
+  color:#6b6b6b;
+  font-size: 18px;
+  width: 90%; /* Ensure the input expands and leave some space for the search icon */
+  border: none;        /* Remove the default border */
+  outline: none;       /* Remove the outline when focused */
+}
+
+.search-results-page-below-search-bar {
+  margin-top:5%;
+  display: flex;
+  margin-left: 5%;
+  margin-right:5%;
+  column-gap: 10px;
+}
+
+.search-results-page-below-search-bar-left{
+  width: 20%;
+  min-width: 200px;
+}
+
+.custom-list-item-button {
+  width: 300px;          /* Set custom width */
+  border: 1px solid grey; /* Add grey border */
+  border-radius: 8px;    /* Optional: round the corners */
+}
+
+.custom-menu {
+  width: 26%; /* Set your custom width */
+  border: 1px solid grey; /* Add grey border */
+  border-radius: 8px; /* Optional: round the corners */
+}
+
+
+.search-results-page-below-search-bar-right{
+  flex:1; /* Take up the rest of the space*/
+}
+
+.pagination-container{
+  display: flex;
+  justify-content: center; /* Centers the pagination horizontally */
+  margin-top: 20px; 
+  margin-bottom: 20px;
+}
+
+.results-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.movie-block {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-width: 800px;
+  height: 140px;
+  border: 1px solid #ddd;
+  padding: 0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  overflow: hidden;
+  box-shadow: 0px 4px 8px rgba(51, 50, 50, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-block:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.movie-poster {
+  width: 100px;
+  height: 100%;
+  border-radius: 8px 0 0 8px;
+  object-fit: cover;
+}
+
+.movie-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: left;
+  height: 100%;
+  width: 100%;
+  margin-left: 11px;
+  padding: 11px 0 0 10px;
+}
+
+.movie-details-upper-part {
+  display: flex;
+}
+
+.movie-title h2 {
+  margin: 0;
+  font-size: 19px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.movie-title p {
+  margin: 0;
+  color: grey;
+  font-size: 14px;
+}
+
+.movie-overview {
+  margin-top: 13px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.movie-overview p {
+  margin: 0;
+  color: #252525;
+  font-size: 16px;
+  display: -webkit-box; /* 'The display: *' makes sure the content is displayed correctly across different browsers, even if text clamping isn’t fully supported. */
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex; /* Using display: flex as a fallback can help ensure better compatibility across different browsers, although it may not fully replicate the clamping behavior in non-WebKit browsers. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -ms-flex-orient: vertical;
+  -webkit-flex-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* For movie detail page */
+.movie-detail-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0; /* Remove any margin */
+  padding: 0; /* Remove any padding */
+  position:relative;
+  top: 64px; /* Start 64px from the top */
+}
+
+.movie-detail-header {
+  padding: 20px;
+  width: 100vw;
+  height: 570px; /* Set the maximum height to 570px */
+  margin-left: calc(-50vw + 50%); /* Center it relative to the viewport */
+  box-sizing: border-box; /* Ensure padding does not affect the width */
+  position: relative; /* Ensure it stays in place */
+  display: flex; /* Use flexbox to align content side by side */
+  overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+.movie-detail-header::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  right: 0;
+  bottom: 0;
+  background-image: var(--backdrop-url); /* Use the backdrop URL */
+  background-size: cover;
+  background-position: center; /* Shift the background image towards the right */
+  background-repeat: no-repeat;
+  
+  /* Apply a color overlay */
+  background-color: rgba(59, 59, 59, 0.5); /* Semi-transparent black overlay */
+  background-blend-mode: overlay; /* Blend the overlay with the backdrop */
+
+
+  /* Apply effects only to the background image */
+  filter:   grayscale(30%) contrast(1.2) brightness(0.88) saturate(1) blur(0.9px); /* Darken and saturate the image */
+  transform: scale(1.5); /* Slight magnification effect */
+  
+  z-index: -1; /* Ensure the pseudo-element is behind the content */
+}
+
+
+.header-left {
+  width: 26%; /* Width is 40% of the parent container */
+  min-width: 333px; /* Set a minimum width for the poster */
+  height: 100%; 
+  min-height: 542px; /* Set a minimum height for the poster */
+  display: flex;
+  justify-content: flex-end; /* Align items to the right side */
+  flex-shrink: 0; /* Prevent the left header from shrinking */
+  align-items: center; /* Center the poster vertically */
+  overflow: hidden; /* Hide any part of the poster that exceeds the container */
+}
+
+.movie-detail-poster-image {
+  width: 100%; /* The image will take up the full width of its container */
+  max-width: 303px; /* The image won't get larger than 303px */
+  height: 100%;
+  max-height: 512px;
+  margin-right: 11px;
+  object-fit: cover; /* Ensure the image covers the area without distortion */
+  border-radius: 8px; /* Optional: Add some border radius for a rounded effect */
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.5), /* Light shadow all around */
+              0 4px 15px rgba(0, 0, 0, 0.1); /* Slight dark shadow for depth */
+}
+
+.header-right {
+  width: 74%;
+  display: flex;
+  flex-direction: column; /* Arrange content vertically */
+  margin-left: 25px;
+  margin-right: 100px;
+  align-items: flex-start; /* Align all child elements (divs, etc.) to the left */
+  justify-content: center; /* Center the content vertically */
+  color: white; /* Adjust text color for better readability */
+  flex-shrink: 0;
+}
+
+/* Add a media query to set a fixed width when the window reaches a certain size */
+@media (max-width: 1200px) {
+  .header-right {
+    width: 1000px; /* Set a fixed width when the screen is smaller */
+  }
+}
+
+.movie-detail-movie-title {
+  font-size: 3rem; /* Adjust the font size as needed */
+  font-weight: bold; /* h1 elements are typically bold */
+  margin-bottom: 5px; /* Keep your existing margin */
+  line-height: 1.2; /* Adjust line height for readability */
+  color: #fbfbfb; /* You can set a custom color for the title */
+}
+
+.year-after-title {
+  display: inline; /* Make this element inline so it stays on the same line */
+  margin-left: 15px; /* Add some spacing between the title and year */
+  font-size: 2.8rem; /* Adjust the font size as needed */
+  font-weight: 300; /* Make the font thinner */
+}
+
+.movie-tagline {
+  font-size:1.3rem;
+  font-style: oblique 90deg;
+  line-height: 1; /* Adjust line height for readability */
+  margin-top: 0;
+  margin-left: 150px;
+  margin-bottom: 25px;
+  color: rgb(255, 255, 255);
+}
+
+.movie-rating {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center; /* Align the star and the text vertically */
+  font-size: 1.2rem; /* Adjust the font size for the rating text */
+  color: #ffffff; /* Set the color for the rating text */
+}
+
+.rating-star {
+  color: #FFD700; /* Gold color for the star */
+  margin-left: 5px; /* Add some space between the rating text and the star */
+}
+
+.rating-after-stars {
+  margin-left: 20px;
+}
+
+.movie-genres {
+  display: flex; /* Use flexbox to align items */
+  flex-direction: column; /* Elements stack vertically */
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.movie-runtime {
+  display: flex; /* Use flexbox to align items */
+  flex-direction: column; /* Elements stack vertically */
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.movie-release-time {
+  display: flex; /* Use flexbox to align items */
+  flex-direction: column; /* Elements stack vertically */
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.movie-detail-page-movie-overview {
+  display: flex; /* Use flexbox to align items */
+  flex-direction: column; /* Elements stack vertically */
+  align-items: flex-start;
+}
+
+.movie-detail-page-movie-overview-paragraph {
+  text-align: left;
+  margin-right:100px;
+  margin-top:0;
+}
+
+
+.movie-detail-content {
+  padding: 20px;
+  margin-top: 30px;
+  margin-left: 3%;
+  margin-right: 3%;
+  display: flex; /* Enables horizontal layout */
+}
+
+.movie-detail-content-left {
+  justify-content: flex-start;  /* Align content horizontally to the left */
+  align-items: flex-start;      /* Align content vertically to the top/left */
+  width: 70%;
+  flex-shrink: 0; /* Prevent shrinking */
+  min-width: 70%; /* Ensure the content doesn't shrink below 500px */
+}
+
+.top-movie-crew {
+  display: flex;
+  margin-top: 10px;
+  margin-left: 32px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.top-cast-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden; /* Hide the overflow of the children */
+}
+
+.top-cast {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 30px;
+  gap: 20px;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+.crew-member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 10px;
+  padding-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(1, 1, 1, 0.1);
+  max-width: 150px;
+  flex-shrink: 0; /* Prevent the crew members from shrinking to fit */
+  overflow: hidden;
+}
+
+.profile-pic {
+  width: 100%;
+  height: 76%;
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.name {
+  margin-top: 10px;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;           /* Limit the text to 3 lines (WebKit-specific) */
+  line-clamp: 3;                   /* Future compatibility with standard property */
+  -webkit-box-orient: vertical;    /* Vertical text orientation */
+  overflow: hidden;                /* Hide overflowing content */
+  text-overflow: ellipsis;         /* Show ellipsis for overflowing content */
+  line-height: 1.2em;              /* Set line height */
+  height: auto;                    /* Let the height adjust naturally */
+  max-height: calc(1.2em * 3);     /* Set the maximum height for 3 lines */
+  width: 100%;                     /* Take full width */
+  word-wrap: break-word;           /* Ensure long words break into the next line */
+  white-space: normal;             /* Ensure normal text wrapping */
+}
+
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  color: rgb(91, 90, 90);
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 2;
+  font-size: 35px; /* Increase the size of the arrow */
+  height: 50%; /* Make the button taller (adjust as needed) */
+  width: 40px; /* Adjust width for more prominent buttons */
+}
+
+.scroll-button.left {
+  left: -10px;
+}
+
+.scroll-button.right {
+  right: -10px;
+}
+
+/* Fading effect on the left */
+.top-cast-wrapper::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2.5%; /* Adjust the width of the fade */
+  background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  z-index: 1; /* Make sure it’s above the content but below the scroll button */
+  pointer-events: none; /* Allow clicks to pass through */
+}
+
+/* Fading effect on the right */
+.top-cast-wrapper::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 2.5%; /* Adjust the width of the fade */
+  background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  z-index: 1; /* Make sure it’s above the content but below the scroll button */
+  pointer-events: none; /* Allow clicks to pass through */
+}
+
+
+.movie-detail-content-right {
+  width: 30%;
+  padding-left: 3%;
+  display: flex; /* Use flexbox to align items */
+  flex-direction: column; /* Elements stack vertically */
+  align-items: flex-start;
+}
+
+.director {
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.budget {
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.revenue {
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.other-names-div {
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  min-height: 100px;
+}
+
+.other-names-content {
+  display: flex; 
+  flex-direction: column; 
+  align-items: start;
+  height: 30%; /* Set your desired height */
+  width: 100%;  /* Set your desired width */
+  overflow: auto; /* Enable scrolling if content exceeds height or width */
+  white-space: nowrap; /* Prevent text from wrapping */
 }
