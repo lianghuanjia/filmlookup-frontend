@@ -4,6 +4,7 @@ import { IconButton, Menu, MenuItem, Button, List, ListItemButton, ListItemText,
 import SearchIcon from '@mui/icons-material/Search';
 import '../App.css'; // Import the CSS file
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const options = [
   'Rating (High to Low)',
@@ -69,7 +70,7 @@ const SearchResults = () => {
         const params = new URLSearchParams(location.search);
         const queryString = params.toString();
         console.log('Query String:', queryString);
-        const response = await fetch(`http://localhost:8080/v1/api/movies?${queryString}`);
+        const response = await fetch(`${BASE_URL}/v1/api/movies?${queryString}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -107,64 +108,80 @@ const SearchResults = () => {
     }
   }, [window.location.search]);
 
-  const CircularProgressWithLabel = (props) => {
-    const percentage = (props.value / 10) * 100;
-  
+const CircularProgressWithLabel = ({ value }) => {
+    // Set value to 0 if value is null; otherwise, use value
+    const displayValue = (value === null || value === undefined) ? 0 : value;
+
+    // Calculate the percentage for the circular progress
+    const percentage = (displayValue === 0 ? 0 : displayValue / 10) * 100;
+
+    // Function to determine the color of the circular progress based on the value
     const getColor = (value) => {
-      if (value === 0){
-        return '#d3d3d3';
-      }
-      else if (value > 7) {
-        return '#48D10C'; // Green
-      } else if (value >= 5 && value <= 7) {
-        return '#ECD71F'; // Orange
-      } else {
-        return '#F54B4B'; // Red
-      }
+        if (value === 0) {
+            return '#d3d3d3'; // Gray for null
+        } else if (value > 7) {
+            return '#48D10C'; // Green
+        } else if (value >= 5 && value <= 7) {
+            return '#ECD71F'; // Orange
+        } else {
+            return '#F54B4B'; // Red
+        }
     };
 
     return (
-      <Box position="relative" display="inline-flex" sx={{ width: 46, height: 46, marginLeft: 'auto', marginRight: '5%', marginTop: '1%' }}>
-        <CircularProgress
-          variant="determinate"
-          value={100}
-          sx={{
-            color: '#e0e0e0',
-            width: '100% !important',
-            height: '100% !important',
-            position: 'absolute',
-            strokeLinecap: 'round',
-          }}
-          thickness={6}
-        />
-        <CircularProgress
-          variant="determinate"
-          value={percentage}
-          sx={{
-            color: getColor(props.value),
-            width: '100% !important',
-            height: '100% !important',
-            strokeLinecap: 'round',
-          }}
-          thickness={6}
-        />
         <Box
-          top={0}
-          left={0}
-          bottom={0}
-          right={0}
-          position="absolute"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
+            position="relative"
+            display="inline-flex"
+            sx={{ width: 46, height: 46, marginLeft: 'auto', marginRight: '5%', marginTop: '1%' }}
         >
-          <Typography sx={{ fontSize: '18px', fontWeight: 500 }} component="div" color="textSecondary">
-            {props.value === 0 ? '0.0' : props.value.toFixed(1)}
-          </Typography>
+            <CircularProgress
+                variant="determinate"
+                value={100}
+                sx={{
+                  color: (value === null || value === undefined) ? '#ebebeb' : '#e0e0e0', // Set to red if value is null
+                  width: '100% !important',
+                  height: '100% !important',
+                  position: 'absolute',
+                  strokeLinecap: 'round',
+              }}
+                thickness={6}
+            />
+            <CircularProgress
+                variant="determinate"
+                value={percentage}
+                sx={{
+                    color: getColor(displayValue),
+                    width: '100% !important',
+                    height: '100% !important',
+                    strokeLinecap: 'round',
+                }}
+                thickness={6}
+            />
+            <Box
+                top={0}
+                left={0}
+                bottom={0}
+                right={0}
+                position="absolute"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+            >
+                <Typography 
+                    sx={{ 
+                        fontSize: '18px', 
+                        fontWeight: 500, 
+                        color: (value === null || value === undefined) ? '#e4e4e4' : 'inherit' // Change color to red if value is null
+                    }} 
+                    component="div" 
+                    color="textSecondary"
+                >
+                    {displayValue === 10 ? displayValue : displayValue.toFixed(1)}
+                </Typography>
+            </Box>
         </Box>
-      </Box>
     );
-  };
+};
 
   const handleInputChange = (e) => {
     setSearchInput(e.target.value);
@@ -239,6 +256,9 @@ const SearchResults = () => {
   };
 
   const formatReleaseTime = (releaseTime) => {
+    if (releaseTime === null) {
+      return 'N/A'; // or any other placeholder you'd like to use
+    }
     if (/^\d{4}$/.test(releaseTime)) {
       return releaseTime;
     }
@@ -313,18 +333,6 @@ const SearchResults = () => {
                   }}
                 />
               </ListItemButton>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleApplySorting()}
-                sx={{
-                  marginTop: '10px',  // Space between ListItemButton and Apply Button
-                  width: '100%',      // Make button full width to match ListItemButton
-                  borderRadius: '8px',
-                }}
-              >
-                APPLY
-              </Button>
             </List>
             <Menu
               id="dropdown-menu"

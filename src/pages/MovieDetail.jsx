@@ -3,6 +3,8 @@ import { useParams, useLocation } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 const MovieDetail = () => {
     const castRef = useRef(null);
     const { id } = useParams(); // Get the movie_id from the React URL that directs to this page
@@ -11,6 +13,7 @@ const MovieDetail = () => {
     const [error, setError] = useState(null); // State to handle errors
     const location = useLocation();
     const movieTitle = location.state?.movieTitle || 'Movie Details'; // Get the movie title from the state in the page that directs to this page
+
 
     // Dynamically set the document title based on the movie title
     useEffect(() => {
@@ -21,7 +24,7 @@ const MovieDetail = () => {
         // Function to fetch movie details from the backend
         const fetchMovieDetails = async () => {
           try {
-            const response = await fetch(`http://localhost:8080/v1/api/movies/${id}`);
+            const response = await fetch(`${BASE_URL}/v1/api/movies/${id}`);
             if (!response.ok) {
               throw new Error('Failed to fetch movie details');
             }
