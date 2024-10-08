@@ -26,7 +26,7 @@ const Header = () => {
       <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box style={{ display: 'flex', alignItems: 'center' }}>
           <Typography variant="h6" component="div" style={{ marginRight: '20px', cursor: 'pointer' }} onClick={handleMovieDBClick}>
-            MovieDB
+            Filmlookup
           </Typography>
 
           <Button
